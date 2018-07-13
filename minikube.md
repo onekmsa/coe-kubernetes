@@ -14,9 +14,13 @@
   $ kubectl version
   ~~~
 
-  * minikube([release check](https://github.com/kubernetes/minikube/releases))를 설치합니다.(작성일 기준 0.28.0 버전)
+  * minikube를 설치합니다.(작성일 기준 0.28.0 버전 - [Release Version check](https://github.com/kubernetes/minikube/releases))
   ~~~bash
   $ curl -Lo minikube https://storage.googleapis.com/minikube/releases/v0.28.0/minikube-darwin-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/
+  ~~~
+  혹은 Homebrew를 통해서 설치한다 
+  ~~~bash
+  brew cask install minikube
   ~~~
 
   * minikube가 정상적으로 설치 되었는지 버전을 확인합니다.

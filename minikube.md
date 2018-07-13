@@ -9,10 +9,12 @@
   $ brew install kubectl
   ~~~
 
+
   * kubectl이 정상적으로 설치 되었는지 버전을 확인합니다.
   ~~~bash
   $ kubectl version
   ~~~
+
 
   * minikube를 설치합니다.(작성일 기준 0.28.0 버전 - [Release Version check](https://github.com/kubernetes/minikube/releases))
   ~~~bash
@@ -23,10 +25,12 @@
   brew cask install minikube
   ~~~
 
+
   * minikube가 정상적으로 설치 되었는지 버전을 확인합니다.
   ~~~bash
   $ minikube version
   ~~~
+
 
   * 클러스터를 생성합니다.
   ~~~bash
@@ -37,10 +41,12 @@
 
   ![VirtualBox에 minikube가 올라간 모습](./image/virtualbox.png)
 
+
   * 클러스터 상태를 확인합니다.
   ~~~bash
   $ kubectl cluster-info
   ~~~
+
 
   * 마스터가 정상적으로 동작되었다면 클러스터의 노드를 확인합니다.
   ~~~bash

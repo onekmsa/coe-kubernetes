@@ -1,4 +1,4 @@
-# Minikube
+# [Minikube](https://kubernetes.io/docs/tutorials/hello-minikube/)
 미니큐브는 로컬 컴퓨터에 가상 머신을 생성하고 하나의 노드만 포함하는 간단한 클러스터를 배포하는 작은 쿠버네티스입니다.
 
 ## 1. 설치

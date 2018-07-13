@@ -32,11 +32,15 @@
   ~~~
 
 
-  * 클러스터를 생성합니다.
+  * 클러스터를 생성합니다. 
   ~~~bash
   $ minikube start
   ~~~
-
+  혹은 vm-driver option을 시정하여 설정합니다. [오류 발생시 참고](https://github.com/kubernetes/minikube/blob/master/docs/drivers.md#hyperkit-driver)
+  ~~~bash
+  $ minikube start --vm-driver=hyperkit
+  ~~~
+  
   성공적으로 실행 되면 아래와 같은 화면을 볼 수 있습니다.
 
   ![VirtualBox에 minikube가 올라간 모습](./image/virtualbox.png)

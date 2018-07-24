@@ -1,1 +1,1 @@
-  kubeadm join 192.168.10.77:6443 --token l8ac3i.q9llpswevn2kgikh
+  kubeadm join 192.168.10.77:6443 --token 9usxp1.4vtdzn0zve07lfbj

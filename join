@@ -1,0 +1,1 @@
+  kubeadm join 192.168.10.77:6443 --token z7q6lh.gh7qshb3udnft3nb --discovery-token-ca-cert-hash sha256:ff02e6c8cc0c43aaf04580e14e8c3d572a42344f7fe1b31b3c38682213fcc223

@@ -1,4 +1,0 @@
-sudo kubeadm join 192.168.10.77:6443 --token 9usxp1.4vtdzn0zve07lfbj --discovery-token-unsafe-skip-ca-verification
-
-
-

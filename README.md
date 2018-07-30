@@ -10,3 +10,7 @@
 * minikube 설치 [바로가기](./kubernetes-install.md)
 
 * kubeadm을 이용한 클러스터 구축 [바로가기](./kuberadm.md)
+
+## 3. 쿠버네티스 배포 전략
+
+* 쿠버네티스 배포 전략 [바로가기](./deploymentstrategies.md)

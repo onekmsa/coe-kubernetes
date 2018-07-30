@@ -265,7 +265,7 @@ Istio는 다른 서비스 meshes와 마찬가지로 가중치 및 / 또는 HTTP 
 
 * 인스턴스가 준비 될 때까지 기다립니다.
 
-* 90%의 트래픽이 버전1로 10%의 트래픽이 버전2로 가도록 Istio VirtualService를 업데이트 합니다.
+* 특정 헤더를 통해서 버전2로 접속합니다. 만약 버전2가 성공적으로 작동한다면 버전2로 변경합니다.
 
 
 먼저 Istio를 설치합니다.
@@ -285,12 +285,12 @@ $ watch kubectl get pods -n istio-system
 
 
 정상적으로 실행이 되었다면 2개의 deployment를 생성합니다.
-(카나리아 예제와 동일합니다.)
 ~~~bash
-$ kubectl run act1 --image=httpd:latest --port=80 --labels="app=act-app"
-$ kubectl run act2 --image=nginx:latest --port=80 --labels="app=act-app"
+$ kubectl run act1 --image=httpd --labels='app=act-app,version=1.0'
+$ kubectl run act2 --image=nginx --labels='app=act-app,version=2.0'
 $ kubectl scale deploy act1 --replicas=3
-$ kubectl expose deploy act1 --type=NodePort --name=act
+$ kubectl run act1 --image=httpd --labels='app=act-app,version=1.0' --port=80
+$ kubectl run act2 --image=nginx --labels='app=act-app,version=2.0' --port=80
 ~~~
 
 
@@ -301,7 +301,10 @@ $ kubectl get deploy/act1 -o yaml | istioctl kube-inject -f - | kubectl apply -f
 $ kubectl get deploy/act2 -o yaml | istioctl kube-inject -f - | kubectl apply -f -
 ~~~
 
+다음으로 아래의 yaml 파일을 만들어 줍니다.
+gateway와 라우팅 정보를 가지고 있는 virtualservice입니다.
 
+라우팅 정보를 보면 헤더 정보에 x-api-version을 v.1.0.0을 입력하면 act1 서비스로 라우팅을 하고 v.2.0.0을 입력하면 act2로 라우팅을 하는 것을 확인 할 수 있습니다.
 ~~~yml
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
@@ -310,35 +313,68 @@ metadata:
   labels:
     app: act-app
 spec:
+  selector:
+    istio: ingressgateway # use istio default controller
   servers:
-    - port:
-        number: 80
-        name: http
-        protocol: HTTP
-      hosts:
-        - act-app.local
-~~~
-
-
-~~~yml
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: act-gateway
+  name: act-info
   labels:
     app: act-app
 spec:
   hosts:
-    - act-app.local
+  - "*"
   gateways:
-    - act-gateway
+  - act-gateway
   http:
-    - route:
-        - destination:
-            host: act1
+    - match:
+       - headers:
+           x-api-version:
+             exact: v.1.0.0
+       route:
+       - destination:
+           host: act1
+     - match:
+       - headers:
+           x-api-version:
+             exact: v.2.0.0
+       route:
+       - destination:
+           host: act2
 ~~~
 
+위 파일을 작성하였다면 kubectl로 apply를 해줍니다.
 
 ~~~bash
-$ kubectl apply -f ./gateway.yaml -f ./virtualservice.yaml
+$ kubectl apply -f ./[파일명].yaml
 ~~~
+
+다음으로 istio-ingressgateway의 포트번호를 확인합니다.
+~~~bash
+$ kubectl get svc/istio-ingressgateway -n istio-system
+~~~
+
+아래의 명령어를 입력하여 v.2.0.0이 정상적으로 작동하는지 확인합니다.
+~~~bash
+$ curl http://192.168.10.77:31380 -H 'x-api-version: v.1.0.0'
+~~~
+
+nginx(act2서비스)가 정상적으로 작동 되었다고 생각이 되면 act2의 replicas를 증가하고 act1을 종료 합니다.
+
+# 7. 기타
+위 예제는 화면의 변화를 바로 보여주기 위해서 nginx와 httpd를 기준으로 설명하였습니다.
+
+실제 운영단계에서는 보통 같은 이미지(어플리케이션)를 기준으로 태그만 다르게 하여(1.0.1 -> 1.0.2) 배포 전략을 세우는 것이 일반적일 것입니다.
+
+따라서 위 예제를 참고로 배포 전략을 참고 하시길 바랍니다.
+
+# 8. 출처
+https://container-solutions.com/kubernetes-deployment-strategies/

@@ -20,27 +20,27 @@
 또 다른 예제로는 Git 레파지토리에 있는 파일과 싱크를 맞춰주는 사이드카 컨테이너를 메인 컨테이너와 함께 배포하는 것입니다.
 Git 동기화 컨테이너는 자신의 역할만 하기 때문에 재사용할 수 있고, 어플리케이션 컨테이너는 단순히 DB 서버에 접속만 하면 됩니다.
 
-<img src="images/kubernetes-sidecar.png">
+<img src="image/kubernetes-sidecar.png">
 
 ### Ambassador/Proxy Pattern
 이 패턴은 서버들의 그룹에 프록시 역할을 하는 컨테이너(ambassador container)를 사용하는 것입니다.  
 주된 목적은 앰버서더 컨테이너를 사용하여 외부서버의 접근을 단순화시키는 것입니다.  
 서버 그룹을 호출하기 위해선 이 단일 앰버서더 컨테이너를 통해서 접근하게 됩니다.
 
-<img src="images/kubernetes-ambassador.png">
+<img src="image/kubernetes-ambassador.png">
 
 ### Adapter Pattern
 이 패턴은 컨테이너 내부에서 실행되고 있는 어플리케이션에 동일한 방법으로 접근하고 단순화하기 위해서 추가적인 Adapter 컨테이너를 함께 배포합니다. 메인 컨테이너는 어댑터 컨테이너를 통해서 로컬호스트로 통신할 수 있습니다.  
 외부 서버로의 접근을 단순화하는 앰버서더 컨테이너와는 다릅니다.  
 어댑터 패턴의 예로는 모든 컨테이너들이 동일한 모니터링 인터페이스를 사용하도록 하는 것입니다.
 
-<img width="300" src="images/kubernetes-adapter.png">
+<img width="300" src="image/kubernetes-adapter.png">
 
 참고 https://vitalflux.com/container-design-patterns-kubernetes-pods-design/
 
 # 쿠버네티스 컴포넌트
 
-<img height="400" src="images/kubernetes-architecture.png">
+<img height="400" src="image/kubernetes-architecture.png">
 
 ### 마스터 컴포넌트
 마스터는 쿠버네티스의 제어 플레인(control plane)으로 클러스터를 관리합니다.

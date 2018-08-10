@@ -1,0 +1,72 @@
+
+## Jenkins
+Jenkins 호스트 서버에서 docker agent를 실행하여 
+ - Cloning Git
+ - Build Project
+ - Build Image
+ - Push Image : private repository에 생성한 image를 push
+ - Kubernetes Deploy : Kubernetes 서버에 ssh로 접속하여 이미지를 pull 한 후 이미지 교체 
+
+
+```sh
+kubectl create secret docker-registry actregistrykey --docker-server=https://docker.sds-act.com --docker-username=dockeruser --docker-password=Jeep8walrus!
+kubectl patch serviceaccount default -p '{"imagePullSecrets": [{"name": "actregistrykey"}]}'
+```
+
+
+```sh
+pipeline {
+  agent {
+    docker {
+      image 'common/jenkins-slave-jdk-maven-git-docker:0.1'
+      args '-v /maven-local-repository:/root/.m2/repository'
+      registryCredentialsId 'dockeruser'
+      registryUrl 'https://docker.sds-act.com'
+    } 
+  }
+  
+  environment {
+    registry = "docker.sds-act.com/leo-test"
+    registryCredential = 'dockeruser'
+    dockerImage = ''
+  }
+  
+  stages {
+    stage('Cloning Git') {
+      steps {
+        git credentialsId: 'min0418', url: 'https://github.com/SDSACT/coe-eureka.git'
+      }
+    }      
+    stage('Build Project') {
+      steps {
+        script{
+            sh "mvn clean install -Dprofile=kube -DskipTests=true"
+        }
+      }
+    }          
+    stage('Building image') {
+      steps{
+        script {
+          dockerImage = docker.build registry + ":" + '${BUILD_NUMBER}'
+        }
+      }
+    }
+    stage('Deploy Image') {
+      steps{
+        script {
+          docker.withRegistry('https://docker.sds-act.com', 'dockeruser' ) {
+            dockerImage.push()
+          }
+        }
+      }
+    }
+    stage('kube') {
+        steps {
+            script {
+                sshPublisher(publishers: [sshPublisherDesc(configName: 'kube-master', transfers: [sshTransfer(excludes: '', execCommand: 'kubectl run leo-test --image=docker.sds-act.com/leo-test:${BUILD_NUMBER} --env="SPRING_PROFILES_ACTIVE=kube"', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+            }
+        }
+    }
+  }
+}
+```

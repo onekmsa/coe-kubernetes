@@ -1,5 +1,8 @@
 
 ## Jenkins
+
+### Deploy with SSH
+
 Jenkins 호스트 서버에서 docker agent를 실행시키고  
 agent에서 Kubernetes 서버에 ssh로 직접 접속하여 배포하는 방법으로 아래의 pipeline으로 구성됩니다.   
  - Cloning Git
@@ -107,3 +110,112 @@ pipeline {
   }
 }
 ```
+
+### Deploy with JNLP
+
+Jenkins의 Kubernetes Plugin을 통해 agent를 Kubernetes 서버에서 실행시킵니다.
+
+1. Jenkins Plugin 설치
+ - docker
+ - kubernetes
+
+2. Jenkins Credential 설정
+동일
+3. Kubernetes Secret 설정
+동일
+
+4. Jenkins Kubernetes 설정 정보 추가
+Jenkins > configuration > Cloud > Kubernetes
+
+5. 
+
+kubectl create secret -n default generic kube-config --from-file=$HOME/.kube/config
+
+Jenkins > configuration > Cloud > Kubernetes
+설정 추가
+volumes: [secretVolume(secretName: 'kube-config', namespace: 'ns-jenkins', mountPath: '/root/.kube')])
+
+
+kubectl edit clusterrolebinding/cluster-admin
+
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: default
+
+6. 
+```sh
+def remote = [:]
+remote.name = 'test'
+remote.host = '192.168.10.77'
+remote.user = 'actmember'
+remote.password = 'jeep8walrus'
+remote.allowAnyHosts = true
+
+pipeline {
+  agent {label 'jenkins-template'}
+  
+  environment {
+    registry = "docker.sds-act.com/eureka-test"
+    dockerImage = ''
+    buildnum = ''
+  }
+  
+  stages {
+  
+    stage('Cloning Git') {
+      steps {
+        git credentialsId: 'min0418', url: 'https://github.com/SDSACT/coe-eureka.git'
+      }
+    }   
+       
+    stage('Build Project') {
+      steps {
+        container('maven') {
+            script{
+                sh "mvn clean install -Dprofile=kube -DskipTests=true"
+            }
+        }
+      }
+    }
+    stage('Building image') {
+      steps{
+        container('docker') {
+            script {
+              buildnum = '${BUILD_NUMBER}'
+              dockerImage = docker.build registry + ":" + buildnum
+            }
+        }
+      }
+    }
+    stage('Deploy Image') {
+      steps{
+        container('docker') {        
+            script {
+              docker.withRegistry('https://docker.sds-act.com', 'dockeruser' ) {
+                dockerImage.push()
+              }
+            }
+        }
+      }
+    }
+    stage('Kube Deploy') {
+      steps{
+        container('kubectl') {   
+          script {
+            sh ('kubectl run leo-test --env="SPRING_PROFILES_ACTIVE=kube" --image=docker.sds-act.com/eureka-test:' + buildnum)
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+** 추가
+- admin Group에 defalut:defalut 추가하기
+- env (profile설정 안했는데 kube로 시작됨)
+- 이미지 넣어서 가이드 보충
+- User부터 다시 만들기 
+http://bryan.wiki/296?category=261316
+

@@ -24,7 +24,7 @@ Pipeline에서 사용할 인증 정보를 추가해 줍니다.
         git credentialsId: 'min0418', url: 'https://github.com/SDSACT/coe-eureka.git'
       }
    ```
- - private docker repository에 image를 푸시하기 위해 인증정보를 등록하여 Pipeline에 아래와 같이 credentialsId를 입력해 줍니다.  
+ - private docker repository에 image를 푸시하기 위해 인증정보를 등록하여(예제는 dockeruser로 등록 함) Pipeline에 아래와 같이 credentialsId를 입력해 줍니다.  
    ```sh
    docker.withRegistry('https://docker.sds-act.com', 'dockeruser' ) {
         dockerImage.push()

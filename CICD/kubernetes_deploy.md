@@ -68,7 +68,7 @@ Pipeline Script에서 사용할 인증 정보를 추가해 줍니다.
 
   - private docker registry 접근을 위한 Secret 설정
     ```sh
-    $ kubectl create secret docker-registry coe-registry-key -n coe-namespace --docker-server=https://docker.sds-act.com --docker-username=dockeruser --docker-password=Jeep8walrus!
+    $ kubectl create secret docker-registry coe-registry-key -n coe-namespace --docker-server=https://docker.sds-act.com --docker-username=dockeruser --docker-password=yourPassword
     ```
     Secret을 Serviceaccount에 적용
     ```sh

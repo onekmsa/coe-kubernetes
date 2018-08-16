@@ -20,6 +20,37 @@ minikube 혹은 kubeadm 등으로 구성 된 클러스터 환경에서 실행을
 $ kubectl run act-httpd --image=httpd:latest --port 80
 ~~~
 
+yaml 설정파일로 Deployment를 정의 후 적용할수 있습니다.  
+```yaml
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: test-dep-kube-leo
+  labels:
+    app: test-kube
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test-kube
+  template:
+    metadata:
+      labels:
+        app: test-kube
+        version: v17
+    spec:
+      containers:
+      - name: test-kube
+        image: docker.sds-act.com/test-dep-kube:17
+        ports:
+        - containerPort: 9000
+      imagePullSecrets:
+      - name: act-docker-registry-key
+```
+~~~bash
+$ kubectl apply -f deployment.yaml
+~~~
+
 # 3. metadata 확인
 실행중인 deployments를 확인하는 방법은 아래와 같습니다.
 ~~~bash

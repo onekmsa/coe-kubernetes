@@ -354,10 +354,10 @@ Kubernetes에 배포하기 위한 deployments.yaml 파일은 해당 프로젝트
  - docker
  - Kubernetes Continuous Deploy Plugin
 
-2. Jenkins Credential 설정
+2. Jenkins Credential 설정   
 Jenkins에서 github 과 private docker registry 사용을 위한 credential 설정은 앞에서 설명한 방법과 동일하여 생락 합니다.  
 
-3. Kubernetes Secret 설정
+3. Kubernetes Secret 설정   
 배포 대상 Kubernetes 서버에서 Private docker registry로 부터 이미지를 pull 하기 위해 Secret 오브젝트를 생성합니다.  
   ```sh
   $ kubectl create secret docker-registry actregistrykey --docker-server=https://docker.sds-act.com --docker-username=dockeruser --docker-password=yourpwd

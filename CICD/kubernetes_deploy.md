@@ -339,3 +339,9 @@ default Serviceaccount에 적용해 줍니다.
 ## 참고   
 https://illya-chekrygin.com/2017/08/26/configuring-certificates-for-jenkins-kubernetes-plugin-0-12/  
 http://bryan.wiki/296?category=261316
+
+
+## TODO
+1. fabric 적용 
+https://docs.microsoft.com/ko-kr/java/azure/spring-framework/deploy-spring-boot-java-app-using-fabric8-maven-plugin?view=azure-java-stable
+2. Helm

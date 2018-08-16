@@ -2,9 +2,9 @@
 # Jenkins
 
 Jenkins에서 Kubernetes로의 배포 방법을 설명합니다.
-1. Jenkins Kubernetes Plugins : Agent를 Kubernetes 서버 내에서 실행    
-2. Jenkins SSH to Kubernetes : Jenkins 서버에서 Docker Agent를 실행하여 Kubernetes 서버로 SSH 접속하여 명령어 실행
-3. Kubernetes Continuous Deploy Plugin : Jenkins 서버에서 Docker Agent를 실행하여 Kubernetes 서버로 SSH 접속하여 명령어 실행
+1. [Jenkins Kubernetes Plugins](https://github.com/SDSACT/coe-kubernetes/blob/master/CICD/kubernetes_deploy.md#jenkins-kubernetes-plugin) : Agent를 Kubernetes 서버 내에서 실행    
+2. [Jenkins SSH to Kubernetes](https://github.com/SDSACT/coe-kubernetes/blob/master/CICD/kubernetes_deploy.md#deploy-with-ssh) : Jenkins 서버에서 Docker Agent를 실행하여 Kubernetes 서버로 SSH 접속하여 명령어 실행
+3. [Kubernetes Continuous Deploy Plugin](https://github.com/SDSACT/coe-kubernetes/blob/master/CICD/kubernetes_deploy.md#kubernetes-continuous-deploy-plugin) : Jenkins 서버에서 Docker Agent를 실행하여 Kubernetes 서버로 SSH 접속하여 명령어 실행
 
 ## Jenkins Kubernetes Plugin
 

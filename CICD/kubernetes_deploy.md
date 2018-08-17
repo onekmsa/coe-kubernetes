@@ -342,6 +342,8 @@ http://bryan.wiki/296?category=261316
 
 
 ## TODO
-1. fabric 적용 
+1. fabric 적용
 https://docs.microsoft.com/ko-kr/java/azure/spring-framework/deploy-spring-boot-java-app-using-fabric8-maven-plugin?view=azure-java-stable
 2. Helm
+
+http://blog.christianposta.com/microservices/netflix-oss-or-kubernetes-how-about-both/

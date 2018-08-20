@@ -194,6 +194,8 @@ spec:
 ### 2.9 StatefulSet
 
 ### 2.9 Secret
+password, ssh key, OAuth 토큰 등 민감한 정보를 pod가 정의된 설정에 넣지 않고, Kubernetes secret 오브젝트로 생성하여  
+안전하게 관리하고 사용할 수 있습니다.  
 
 ### 2.9 Name(이름)
 쿠버네티스의 오브젝트는 UID와 이름으로 식별 됩니다. 이름은 API 호출 시 오브젝트를 참조 할 때 사용합니다.

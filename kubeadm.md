@@ -127,6 +127,11 @@ kubeadm join --token c07e38.feb309e6ea9ce270 10.146.0.2
 $ sudo kubeadm token list
 ~~~
 
+노드에서 아래 명령어로 조인을 합니다.
+~~~bash
+$ sudo kubeadm join [KubeAPIServer] --token [TokenString] --discovery-token-unsafe-skip-ca-verification
+~~~
+
 노드 추가가 정상적으로 되었다면 마스터 노드에서 정상적으로 클러스터링이 되었는지 확인합니다.
 ~~~bash
 $ sudo kubeadm get nodes

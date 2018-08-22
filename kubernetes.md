@@ -219,10 +219,23 @@ spec:
 데이터가 팟이 종료 된 이후에도 보존되어야 하거나 팟 사이에서 데이터를 주고 받을 필요가 있을 때 사용 됩니다.
 
 ### 2.9 StatefulSet
+Deployment와 비슷하게 pods에 배포하고 이들을 관리 한다.  
+deployment와 차이점은 이들 pods의 사용 순서를 명확히 지키고, 각 pod은 고유한 id를 갖게 된다. 그리고 영속적인 스토리지를 가질 수 있어서 db에서 주로 사용 된다.  
 
 ### 2.9 Secret
-password, ssh key, OAuth 토큰 등 민감한 정보를 pod가 정의된 설정에 넣지 않고, Kubernetes secret 오브젝트로 생성하여  
-안전하게 관리하고 사용할 수 있습니다.
+password, ssh key, OAuth 토큰 등 민감한 정보를 pod가 정의된 설정에 넣지 않고,   Kubernetes secret 오브젝트로 생성하여 안전하게 관리하고 사용할 수 있습니다.  
+secret의 값은 문자열을 base64로 인코딩 하여 저장됩니다.  
+```bash
+# 파일에서 읽어서 생성  
+kubectl create secret generic db-user-pass --from-file=./username --from-file=./password
+# 문자열로 입력하여 생성  
+kubectl create secret generic db-user-pass --from-literal=password=MySecretPassword --from-literal=username=testuser
+```
+secret에는 아래와 같은 type이 있습니다.  
+- docker-registry: docker registry 사용을 위함  
+- generic: 일반적인 경우  
+- tls: TLS secret을 생성하려는 경우  
+
 > Kubernetes Dashboard에서 secret의 정보가 노출되는 이슈가 있어서
 > 수정 중인것으로 생각 됨.
 > 참고: https://github.com/kubernetes/kubernetes/issues/67420

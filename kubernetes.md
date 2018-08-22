@@ -142,28 +142,28 @@ userspace와 kernel space간 이동이 없어 처리가 빠름.
 하지만 지정 된 Pod이 down 상태여도 다른 pods으로 요청하는 복구 기능은 없음     
 <img height="400" src="image/service-proxy-iptables.png">   
 
-```text
-<< host의 iptables 에 등록된 service 및 pods 관련 정보 >>
+  ```text
+  << host의 iptables 에 등록된 service 및 pods 관련 정보 >>
 
-# 서비스의 ip주소를 통해 최초 요청이 들어옴
--A KUBE-SERVICES -d 10.108.0.5/32 -p tcp -m comment --comment "default/test-dep-kube-service:http cluster IP" -m tcp --dport 9000 -j KUBE-SVC-TQ4E56Z4F6TBYYPQ
+  # 서비스의 ip주소를 통해 최초 요청이 들어옴
+  -A KUBE-SERVICES -d 10.108.0.5/32 -p tcp -m comment --comment "default/test-dep-kube-service:http cluster IP" -m tcp --dport 9000 -j KUBE-SVC-TQ4E56Z4F6TBYYPQ
 
-# 정의된 KUBE-SVC-TQ4E56Z4F6TBYYPQ chain을 통해 목적지를 찾음(loadbalancing 기본은 rr)  
--A KUBE-SVC-TQ4E56Z4F6TBYYPQ -m comment --comment "default/test-dep-kube-service:http" -m statistic --mode random --probability 0.33332999982 -j KUBE-SEP-RXMBMPDUQECRVI4M
--A KUBE-SVC-TQ4E56Z4F6TBYYPQ -m comment --comment "default/test-dep-kube-service:http" -m statistic --mode random --probability 0.50000000000 -j KUBE-SEP-67PEAYSNKHULJ547
--A KUBE-SVC-TQ4E56Z4F6TBYYPQ -m comment --comment "default/test-dep-kube-service:http" -j KUBE-SEP-VI3FALLDDO5KGYQO
+  # 정의된 KUBE-SVC-TQ4E56Z4F6TBYYPQ chain을 통해 목적지를 찾음(loadbalancing 기본은 rr)  
+  -A KUBE-SVC-TQ4E56Z4F6TBYYPQ -m comment --comment "default/test-dep-kube-service:http" -m statistic --mode random --probability 0.33332999982 -j KUBE-SEP-RXMBMPDUQECRVI4M
+  -A KUBE-SVC-TQ4E56Z4F6TBYYPQ -m comment --comment "default/test-dep-kube-service:http" -m statistic --mode random --probability 0.50000000000 -j KUBE-SEP-67PEAYSNKHULJ547
+  -A KUBE-SVC-TQ4E56Z4F6TBYYPQ -m comment --comment "default/test-dep-kube-service:http" -j KUBE-SEP-VI3FALLDDO5KGYQO
 
-# 최종 목적지 별 ip 정보
--A KUBE-SEP-67PEAYSNKHULJ547 -s 10.43.0.248/32 -m comment --comment "default/test-dep-kube-service:http" -j KUBE-MARK-MASQ
--A KUBE-SEP-67PEAYSNKHULJ547 -p tcp -m comment --comment "default/test-dep-kube-service:http" -m tcp -j DNAT --to-destination 10.43.0.248:9000
--A KUBE-SEP-RXMBMPDUQECRVI4M -s 10.40.0.18/32 -m comment --comment "default/test-dep-kube-service:http" -j KUBE-MARK-MASQ
--A KUBE-SEP-RXMBMPDUQECRVI4M -p tcp -m comment --comment "default/test-dep-kube-service:http" -m tcp -j DNAT --to-destination 10.40.0.18:9000
--A KUBE-SEP-VI3FALLDDO5KGYQO -s 10.43.1.12/32 -m comment --comment "default/test-dep-kube-service:http" -j KUBE-MARK-MASQ
--A KUBE-SEP-VI3FALLDDO5KGYQO -p tcp -m comment --comment "default/test-dep-kube-service:http" -m tcp -j DNAT --to-destination 10.43.1.12:9000  
-```
+  # 최종 목적지 별 ip 정보
+  -A KUBE-SEP-67PEAYSNKHULJ547 -s 10.43.0.248/32 -m comment --comment "default/test-dep-kube-service:http" -j KUBE-MARK-MASQ
+  -A KUBE-SEP-67PEAYSNKHULJ547 -p tcp -m comment --comment "default/test-dep-kube-service:http" -m tcp -j DNAT --to-destination 10.43.0.248:9000
+  -A KUBE-SEP-RXMBMPDUQECRVI4M -s 10.40.0.18/32 -m comment --comment "default/test-dep-kube-service:http" -j KUBE-MARK-MASQ
+  -A KUBE-SEP-RXMBMPDUQECRVI4M -p tcp -m comment --comment "default/test-dep-kube-service:http" -m tcp -j DNAT --to-destination 10.40.0.18:9000
+  -A KUBE-SEP-VI3FALLDDO5KGYQO -s 10.43.1.12/32 -m comment --comment "default/test-dep-kube-service:http" -j KUBE-MARK-MASQ
+  -A KUBE-SEP-VI3FALLDDO5KGYQO -p tcp -m comment --comment "default/test-dep-kube-service:http" -m tcp -j DNAT --to-destination 10.43.1.12:9000  
+  ```
 
 - userspace mode    
-kube-proxy가 서비스 및 backend pods 주소를 iptable에 등록 후, Serivce로 전송 된 요청을 kube-proxy를 통해 backend pods로 재전송   
+kube-proxy가 서비스의 주소를 iptable에 등록 후, Serivce로 전송 된 요청을 kube-proxy로 재전송해 backend pods와 통신  
 pods의 상태에 따른 유연한 대응 가능  
 <img height="400" src="image/service-proxy-userspace.png">   
 

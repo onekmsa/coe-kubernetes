@@ -131,6 +131,8 @@ $ sudo kubeadm token list
 ~~~bash
 $ sudo kubeadm join [KubeAPIServer] --token [TokenString] --discovery-token-unsafe-skip-ca-verification
 ~~~
+> 기존에 등록된 Node를 다시 join하는 경우에는 kubeadm reset으로 초기화를 먼저 해야 합니다.  
+
 
 노드 추가가 정상적으로 되었다면 마스터 노드에서 정상적으로 클러스터링이 되었는지 확인합니다.
 ~~~bash

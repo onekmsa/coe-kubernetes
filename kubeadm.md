@@ -116,10 +116,10 @@ $ kubectl get pods --all-namespaces
 
 ## 2.2 kubeadm join
 위에서 마스터노드를 초기화 할 때 마지막에 나온 join 구문을 복사해두었다가 워커노드에서 그대로 실행시켜 줍니다.
+kubernetes에서는 메모리 swap을 사용하지 않기 때문에 node에서 이 기능은 off 합니다.  
+
 ```bash
-kubeadm join --token tokenFromMaster  masterAPIAddress
-ex) kubeadm join --token c07e38.feb309e6ea9ce270 --discovery-token-unsafe-skip-ca-verification 10.146.0.2:6443
- 인증을 사용하지 않기위한 옵션 --discovery-token-unsafe-skip-ca-verification
+sudo swapoff -a
 ```
 
 만약 해당 토큰이 기억이 나지 않는다면 마스터 노드에서 아래의 명령어로 조회를 하면 됩니다.
@@ -131,7 +131,7 @@ $ sudo kubeadm token list
 ~~~bash
 $ sudo kubeadm join [KubeAPIServer] --token [TokenString] --discovery-token-unsafe-skip-ca-verification
 ~~~
-> 기존에 등록된 Node를 다시 join하는 경우에는 kubeadm reset으로 초기화를 먼저 해야 합니다.  
+> 기존에 등록된 Node를 다시 join하는 경우에는 kubeadm reset > kubeadm init으로 초기화를 먼저 해야 합니다.  
 
 
 노드 추가가 정상적으로 되었다면 마스터 노드에서 정상적으로 클러스터링이 되었는지 확인합니다.

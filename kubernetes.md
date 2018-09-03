@@ -260,3 +260,14 @@ Pod과 서비스 등은 실행 시에 동적으로 IP가 할당 되는데 실행
 * Container Resource Monitoring : 컨테이너에 대한 일반적인 time-series metircs를 중앙 database에 기록하고 해당 데이터를 탐색하기 위한 UI를 제공합니다.
 
 * Cluster-level Logging : 클러스터 레벨의 로깅 메커니즘은 검색/등록 인터페이스를 사용하여 컨테이너 로그를 중앙 로그 저장소에 저장합니다.
+
+
+## 3. 자원관리
+### 3.1 NameSpace의 자원 제한
+특정 Namespace에서 사용될 자원을 정의 할 수 있다.  
+정의 가능 항목은 다음과 같다.  
+- CPU or MEM에 대하여
+  - default limit: container에서 사용가능한 최대 자원 값  
+  - default Request: container에서 필요로 하는 최소 자원 값  
+  - min: 동일 namespace내부의 container에 대하여 최소한 할당 되어야 하는 자원 값  
+  - max: 동일 namespace내부의 container에 대하여 최대한 할달 될 수 있는 자원 값  

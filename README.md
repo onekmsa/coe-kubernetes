@@ -2,7 +2,7 @@
 
 ## 1. 쿠버네티스 설치
 
-* minikube 설치 [바로가기](./1.설치/kubernetes-install.md)
+* minikube 설치 [바로가기](./1.설치/minikube.md)
 
 * kubeadm을 이용한 클러스터 구축 [바로가기](./1.설치/kuberadm.md)
 

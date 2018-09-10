@@ -56,9 +56,9 @@ $ kubectl set image deployment/act-httpd act-httpd=nginx:latest
 
 아래의 화면과 같이 한꺼번에 종료 된 이후 생성이 되는 것을 확인 할 수 있습니다.
 
-![](./image/recreate1.png)
+![](../image/recreate1.png)
 
-![](./image/recreate2.png)
+![](../image/recreate2.png)
 
 ## 3. ramped
 ramped 배포는 롤링 업데이트 방식 중 하나로 팟을 업데이트하고 새로운 버전의 어플리케이션으로 보조 ReplicaSet을 생성 한 다음 이전 버전의 복제본 수를 줄이고 정확한 수의 복제본에 도달 할 때까지 새로운 버전을 증가시킵니다.
@@ -105,7 +105,7 @@ $ kubectl set image deployment/act-httpd act-httpd=httpd:latest
 
 아래 사진과 같이 팟이 증가하면서 변경 되는 것을 확인 할 수 있습니다.
 
-![](./image/ramped.png)
+![](../image/ramped.png)
 
 ## 4. Blue/Green
 
@@ -150,7 +150,7 @@ act          NodePort    10.105.107.28   <none>        80:31925/TCP   31s
 
 웹브라우저로 접속을 해봅니다.
 
-![](./image/bluegreen1.png)
+![](../image/bluegreen1.png)
 
 httpd기본화면을 확인 할 수 있습니다.
 
@@ -166,11 +166,11 @@ $ kubectl scale deployment act2 --replicas=4
 
 대쉬보드 화면이나 명령어를 실행하게 되면 deployment는 2개, 팟은 총 8개, 서비스는 한개인 것을 확인 할 수 있습니다.
 
-![](./image/bluegreen2.png)
+![](../image/bluegreen2.png)
 
-![](./image/bluegreen3.png)
+![](../image/bluegreen3.png)
 
-![](./image/bluegreen4.png)
+![](../image/bluegreen4.png)
 
 
 버전2의 팟들이 성공적으로 실행되면 patch 명령을 이용하여 서비스의 팟들을 교체하도록 합니다.
@@ -182,7 +182,7 @@ $ kubectl patch service act -p '{"spec":{"selector":{"version":"2.0"}}}'
 
 nginx 기본 화면으로 변경 된 것을 확인 할 수 있습니다.
 
-![](./image/bluegreen5.png)
+![](../image/bluegreen5.png)
 
 버전1을 종료합니다.(deployment 삭제)
 
@@ -226,7 +226,7 @@ $ kubectl run act2 --image=nginx:latest --port=80 --labels="app=act-app"
 
 selector가 동일한 라벨을 가진 것들을 읽어오기 때문입니다.
 
-![](./image/canary1.png)
+![](../image/canary1.png)
 
 
 ~~~bash

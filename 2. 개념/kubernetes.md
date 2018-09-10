@@ -42,7 +42,7 @@
 ### 2.1 Cluster
 클러스터는 노드와 마스터를 통칭하는 개념으로 클러스터 내에는 최소한 3개 의 노드가 있는 것이 좋습니다.  
 다수의 호스트 저장소와 네트워킹 자원의 집합이며 이 곳에서 쿠버네티스 시스템을 구성합니다.  
-<img height="450" src="image/kube-archi.png">  
+<img height="450" src="../image/kube-archi.png">  
 
 ### 2.2 Master
 마스터는 쿠버네티스의 제어 플레인(control plane)의 중심으로서 클러스터를 관리합니다.    
@@ -79,7 +79,7 @@
 ### 2.3 Node
 노드는 단일 호스트이며 물리적 머신이나 가상 머신이 될 수 있습니다.  
 노드 위에서 팟(pod) 뿐만 아니라 쿠버네티스 컴포넌트가 실행 됩니다.  
-<img height="400" src="image/kube-pod.png">    
+<img height="400" src="../image/kube-pod.png">    
 
 * kubelet : 클러스터의 각 노드에서 실행되는 에이전트로서 pod 안의 컨테이너가 잘 실행되는지 관리한다.  
 마스터의 API 서버와 통신을 하면서 노드에게 들어온 명령을 수행하고 노드의 상태들을 마스터로 전달하는 역할을 한다.  
@@ -130,7 +130,7 @@ spec:
 my-service 라는 이름의 서비스는 app=MyApp 이라는 label을 갖는 모든 pod에 대하여 9376 포트로 접근이 가능 합니다.  
 이 경우 내부 pod의 일부가 중단되거나 재시작 된경우 ip가 변경되더라도  
 해당 pod를 서비스가 찾고 서비스 하는데 전혀 문제가 없습니다.  
-<img height="400" src="image/kube-service.png">    
+<img height="400" src="../image/kube-service.png">    
 
 서비스를 통해 다른 cluster의 서비스에 접근하거나, Kubernetes 외부의 서비스를 호출하도록 할수 있습니다.  
 
@@ -140,7 +140,7 @@ my-service 라는 이름의 서비스는 app=MyApp 이라는 label을 갖는 모
 kube-proxy가 서비스 및 backend pods 주소를 iptable에 등록 후, 이를 통해 직접 backend pods로 요청을 전송,  
 userspace와 kernel space간 이동이 없어 처리가 빠름.  
 하지만 지정 된 Pod이 down 상태여도 다른 pods으로 요청하는 복구 기능은 없음     
-<img height="400" src="image/service-proxy-iptables.png">   
+<img height="400" src="../image/service-proxy-iptables.png">   
 
   ```text
   << host의 iptables 에 등록된 service 및 pods 관련 정보 >>
@@ -165,7 +165,7 @@ userspace와 kernel space간 이동이 없어 처리가 빠름.
 - userspace mode    
 kube-proxy가 서비스의 주소를 iptable에 등록 후, Serivce로 전송 된 요청을 kube-proxy로 재전송해 backend pods와 통신  
 pods의 상태에 따른 유연한 대응 가능  
-<img height="400" src="image/service-proxy-userspace.png">   
+<img height="400" src="../image/service-proxy-userspace.png">   
 
 
 #### Multi-Port Services
@@ -271,3 +271,43 @@ Pod과 서비스 등은 실행 시에 동적으로 IP가 할당 되는데 실행
   - default Request: container에서 필요로 하는 최소 자원 값  
   - min: 동일 namespace내부의 container에 대하여 최소한 할당 되어야 하는 자원 값  
   - max: 동일 namespace내부의 container에 대하여 최대한 할달 될 수 있는 자원 값  
+
+## 4. 쿠버네티스 컨테이너 디자인 패턴
+
+쿠버네티스 Pod은 메인 어플리케이션 컨테이너에 추가적으로 아래의 컨테이너들과 함께 배포됩니다.
+- Sidecar Container : 메인 컨테이너의 기능(로깅, 깃 동기화 등)을 추가
+- Ambassador Container : 외부 서버에 접속
+- Adapter Container : 컨테이너 내부에서 실행되고 있는 어플리케이션에 접근  
+
+### Sidecar Pattern
+사이드카 패턴은 메인 컨테이너를 확장하고 기능을 향상시키기 위한 추가적인 컨테이너를 사용하는 것이고, 이 추가적인 컨테이너를 sidecar라고 합니다.
+
+사이드카패턴의 예제로는,
+
+웹서버 컨테이너는 이 웹 서버의 로그들을 읽는 또 다른 사이드카 컨네이너와 함께 배포될 수 있습니다.
+즉, 사이드카 컨테이너가 웹서버 컨테이너의 모든 로그를 처리하는 역할을 합니다.
+그렇다면 왜 웹서버가 자신의 로그를 자체적으로 처리하지 않을까요?
+- Separation of concerns : 웹 서버 컨테이너는 웹 페이지 제공이라는 자신의 관심사에만 집중하게 됩니다. 만약 이슈가 발생하면 다른 관심사와는 분리되어 있기 때문에 문제 상황을 빠르게 식별 가능합니다.
+- Single responsibility principle
+- Cohesiveness/Reusability : 로그만을 처리하는 사이드카 컨테이너는 다른 어플리케이션에서도 재사용할 수 있습니다.
+
+또 다른 예제로는 Git 레파지토리에 있는 파일과 싱크를 맞춰주는 사이드카 컨테이너를 메인 컨테이너와 함께 배포하는 것입니다.
+Git 동기화 컨테이너는 자신의 역할만 하기 때문에 재사용할 수 있고, 어플리케이션 컨테이너는 단순히 DB 서버에 접속만 하면 됩니다.
+
+<img src="../image/kubernetes-sidecar.png">
+
+### Ambassador/Proxy Pattern
+이 패턴은 서버들의 그룹에 프록시 역할을 하는 컨테이너(ambassador container)를 사용하는 것입니다.  
+주된 목적은 앰버서더 컨테이너를 사용하여 외부서버의 접근을 단순화시키는 것입니다.  
+서버 그룹을 호출하기 위해선 이 단일 앰버서더 컨테이너를 통해서 접근하게 됩니다.
+
+<img src="../image/kubernetes-ambassador.png">
+
+### Adapter Pattern
+이 패턴은 컨테이너 내부에서 실행되고 있는 어플리케이션에 동일한 방법으로 접근하고 단순화하기 위해서 추가적인 Adapter 컨테이너를 함께 배포합니다. 메인 컨테이너는 어댑터 컨테이너를 통해서 로컬호스트로 통신할 수 있습니다.  
+외부 서버로의 접근을 단순화하는 앰버서더 컨테이너와는 다릅니다.  
+어댑터 패턴의 예로는 모든 컨테이너들이 동일한 모니터링 인터페이스를 사용하도록 하는 것입니다.
+
+<img width="300" src="../image/kubernetes-adapter.png">
+
+  참고 https://vitalflux.com/container-design-patterns-kubernetes-pods-design/

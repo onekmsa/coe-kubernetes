@@ -87,7 +87,7 @@ $ sudo kubeadm init --apiserver-advertise-address [ip주소]
 
 실행이 되면 아래와 같은 화면을 볼 수 있습니다.
 
-![](./image/kubeadminit.png)
+![](../image/kubeadminit.png)
 
 위에서 설명 한 것처럼 사전체크와 CA체크 각종 설정 파일 생성과 팟을 생성하는 모습을 볼 수 있습니다.
 
@@ -194,7 +194,7 @@ kubernetes-dashboard 의 port가 변경 된 것을 확인 할 수 있습니다.
 웹 브라우저를 열고 http://[apiserver-ip]:[port] 를 입력합니다. 여기서 포트는 위에서 확인 한 포트입니다.
 
 아래와 같은 화면을 볼 수 있는데 1.7버전 부터 더 이상 기본적으로 전체 관리 권한이 부여되지 않기 때문입니다.
-![](./image/kubeadmdashboarderror.png)
+![](../image/kubeadmdashboarderror.png)
 
 이 문제를 해결하려면 아래와 같은 방법이 존재합니다.
 * Authorization Header
@@ -239,11 +239,11 @@ $ kubectl run act-gitlab --image=gitlab/gitlab-ce:latest
 
 명령어를 실행한 이후 대쉬보드에서 deployment, pod, replicaset이 생성 되었음을 확인 할 수 있습니다.
 
-![](./image/deploymentsdashboard.png)
+![](../image/deploymentsdashboard.png)
 
-![](./image/podsdashboard.png)
+![](../image/podsdashboard.png)
 
-![](./image/replicasetdashboard.png)
+![](../image/replicasetdashboard.png)
 
 하지만 외부로 노출 시키기 위해서는 서비스로 등록을 해야 합니다.
 
@@ -257,8 +257,8 @@ $ kubectl expose deployment act-gitlab --port=22,80,443 --type=NodePort
 $ kubectl get svc/act-gitlab
 ~~~
 
-![](./image/svcchange.png)
+![](../image/svcchange.png)
 
 웹 브라우저에서 http://[클러스터ip]:[노출된 포트] 를 입력합니다.
 
-![](./image/gitlabweb.png)
+![](../image/gitlabweb.png)

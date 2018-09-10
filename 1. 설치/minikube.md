@@ -45,7 +45,7 @@
   ~~~
 
   성공적으로 실행 되면 아래와 같은 화면을 볼 수 있습니다.
-  ![VirtualBox에 minikube가 올라간 모습](./image/virtualbox.png)
+  ![VirtualBox에 minikube가 올라간 모습](.../image/virtualbox.png)
 
 
   * 클러스터 상태를 확인합니다.
@@ -80,7 +80,7 @@ $ kubectl get pods
 ~~~
 
 아래와 같은 화면을 볼 수 있습니다.
-  ![VirtualBox에 minikube가 올라간 모습](./image/kubectlgetpods.png)
+  ![VirtualBox에 minikube가 올라간 모습](../image/kubectlgetpods.png)
 
 쿠버네티스 내부의 팟은 현재 private 하고 고립된 네트워크에서 실행 되고 있습니다.
 
@@ -125,7 +125,7 @@ $ kubectl get services
 
 위와 같은 명령어를 실행하면 아래와 같은 화면이 보입니다.
 
-![getservice명령](./image/getservice.png)
+![getservice명령](../image/getservice.png)
 
 여기서 act-httpd의 PORT(S)를 보면 80:32248이 보이는데
 
@@ -154,7 +154,7 @@ deployment가 생성 되면 팟에 라벨이 자동으로 생성이 됩니다.
 $ kubectl describe deployment
 ~~~
 
-![](./image/deployment.png)
+![](../image/deployment.png)
 
 위 그림에서 Labels라는 항목에 보이는 것(run=act-httpd)이 라벨 이름입니다.
 
@@ -185,7 +185,7 @@ $ kubectl scale deployments/act-httpd --replicas=4
 $ kubectl get deployments
 ~~~
 
-![](./image/scale.png)
+![](../image/scale.png)
 
 * DESIRED - 구성된 복제본 수
 
@@ -202,7 +202,7 @@ $ kubectl get deployments
 $ kubectl get pods -o wide
 ~~~
 
-![](./image/scalepods.png)
+![](../image/scalepods.png)
 
 IP 주소가 다른 4 개의 팟을 확인 할 수 있습니다. 변경 내용은 배포 이벤트 로그에 등록되었고 확인하려면 아래처럼 describe 명령어를 사용합니다.
 
@@ -210,7 +210,7 @@ IP 주소가 다른 4 개의 팟을 확인 할 수 있습니다. 변경 내용�
 $ kubectl describe deployments/act-httpd
 ~~~
 
-![](./image/scaledeployment.png)
+![](../image/scaledeployment.png)
 
 replica의 갯수를 줄이고 싶으면 아래의 명령어를 이용합니다.
 
@@ -257,7 +257,7 @@ $ kubectl get pods
 ~~~
 
 아래 그림과 같이 새로운 컨테이너가 생성되고 기존의 컨테이너는 종료가 되고 있는 것을 확인 할 수 있습니다.
-![](./image/updatepods.png)
+![](../image/updatepods.png)
 
 아래 명령어를 통해서 rollout이 성공했는지 확인 할 수 있습니다.
 ~~~bash
@@ -279,7 +279,7 @@ $ kubectl get pods
 ~~~
 
 다음과 같이 pod이 잘 못 되었음을 확인 할 수 있습니다.
-![](./image/error.png)
+![](../image/error.png)
 
 rollout undo 명령어를 통해 이전 상태로 복원합니다.
 
@@ -299,4 +299,4 @@ $ kubectl rollout undo deployments/act-httpd
 $ minikube dashboard
 ~~~
 
-![대쉬보드화면](./image/dashboard.png)
+![대쉬보드화면](../image/dashboard.png)

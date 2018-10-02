@@ -254,4 +254,4 @@ $ kubectl create -f contents-deployment.yaml
 $ kubectl create -f contents-svc.yaml
 ```
 
-![](../images/k8s-contents-deploy.png)
+![](../../../image/k8s-contents-deploy.png)

@@ -259,4 +259,4 @@ $ kubectl create -f admin-deployment.yaml
 $ kubectl create -f admin-svc.yaml
 ```
 
-![](../images/k8s-admin-deploy.png)
+![](../../../image/k8s-admin-deploy.png)

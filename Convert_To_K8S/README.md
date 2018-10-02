@@ -34,7 +34,7 @@
    - [Ingress 설정 방법][ConvertIngress]
      - Nginx Ingress 설치방법
      - Ingress 라우팅 설정
-     - 인증서비스
+     - [인증서비스](./ingress/auth-service-deploy.md)
 ### 2.2 Auth Service가 왜 새로 생기나요?
    <img src="../image/zuul_filter.png" width="500">  
 

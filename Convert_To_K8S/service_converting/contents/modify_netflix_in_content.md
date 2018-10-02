@@ -16,9 +16,9 @@ Netflix Stack 중 K8S가 제공하는 기능으로 대체할 수 있는 라이�
 - 위 라이브러리의 기능은 K8S에서는 아래 목록의 대체제를 사용합니다.
 
 | Microservice    | Spring Cloud & Netflix OSS  |Kubernetes      |
-|------------------------------------|-----------------------------------------|-----------------------------------------------------|-------------------------------|
-| Config Management                  | [Config Server][Config Server], Consul, Netflix Archaius | Config Map & Secret                     |
-| Service Discovery                  | [Eureka][Eureka] | Kubernetes DNS                     |
+|----------|-----------------------|--------------|
+| Config Management   | [Config Server][Config Server], Consul, Netflix Archaius | Config Map & Secret    |
+| Service Discovery   | [Eureka][Eureka] | Kubernetes DNS                     |
 
 ### 2. Property 수정
 bootstrap.yml, application.yml등에서 아래 목록과 관련된 설정이 있다면 삭제 합니다.   

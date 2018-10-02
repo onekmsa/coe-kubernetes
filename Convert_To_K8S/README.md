@@ -3,8 +3,8 @@
 ### 1.1 Compare Netflix OSS with Kubernetes
 
 | Microservice    | Spring Cloud & Netflix OSS  |Kubernetes      |
-|------------------------------------|-----------------------------------------|-----------------------------------------------------|-------------------------------|
-| Config Management                  | [Config Server][Config Server], Consul, Netflix Archaius | Config Map & Secret                     |
+|------|------|------|
+| Config Management|[Config Server][Config Server], Consul, Netflix Archaius | Config Map & Secret |
 | Service Discovery                  | [Eureka][Eureka] | Kubernetes DNS                     |
 | Load Balancing                     | [Netflix Ribbon][Ribbon]                | Kubernetes Service                                  |
 | API Gateway                        | [Netflix Zuul][Zuul]                    | Kubernetes Service & [Ingress Resources][Ingress]   |

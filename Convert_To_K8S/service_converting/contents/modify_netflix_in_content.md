@@ -123,7 +123,7 @@ public class ContentsApplication {
     //}
 }
 ```
-####Eureka 기반으로 어플리케이션을 호출하고 있는 feignClient 코드를 수정합니다.
+#### Eureka 기반으로 어플리케이션을 호출하고 있는 feignClient 코드를 수정합니다.
 
 **FeignClient는 다음 두 가지 방법으로 타 서비스를 호출할 수 있습니다.**
 1. FeignClient에서 name을 통해 호출할 경우

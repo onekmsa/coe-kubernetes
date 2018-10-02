@@ -1,0 +1,73 @@
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: mongo
+spec:
+  serviceName: "mongo"
+  updateStrategy:
+    type: RollingUpdate
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        role: "mongo"
+        environment: development
+    spec:
+      terminationGracePeriodSeconds: 10
+      volumes:
+      - name: mongo-key
+        secret:
+          defaultMode: 0400
+          secretName: mongo-key
+      containers:
+        - name: mongo
+          image: mongo
+          command:
+          - /bin/sh
+          - -c
+          - >
+            if [ -f /data/db/admin-user.lock ]; then
+              mongod --replSet rs0 --clusterAuthMode keyFile --keyFile /etc/secrets-volume/mongodb-keyfile --setParameter authenticationMechanisms=SCRAM-SHA-1 --bind_ip 0.0.0.0;
+            else
+              mongod --auth --bind_ip 0.0.0.0;
+            fi;
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                - /bin/sh
+                - -c
+                - >
+                  if [ ! -f /data/db/admin-user.lock ]; then
+                    sleep 5;
+                    touch /data/db/admin-user.lock
+                    if [ "$HOSTNAME" = "mongo-0" ]; then
+                      touch /data/db/test;
+                      mongo --eval 'db = db.getSiblingDB("contents-service"); db.createUser({ user: "admin", pwd: "password", roles: [{ role: "readWrite", db: "contents-service" }]});';
+                    fi;
+                    mongod --shutdown;
+                  fi;
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - name: mongo-claim
+              mountPath: /data/db
+            - name: mongo-key
+              mountPath: "/etc/secrets-volume"
+        - name: proposal-mongo-sidecar
+          image: austbot/mongo-k8s-sidecar
+          env:
+            - name: KUBERNETES_MONGO_SERVICE_NAME
+              value: "mongo"
+            - name: MONGO_SIDECAR_POD_LABELS
+              value: "role=mongo,environment=development"
+  volumeClaimTemplates:
+  - metadata:
+     name: mongo-claim
+    spec:
+     accessModes:
+      - ReadWriteOnce
+     storageClassName: local-storage
+     resources:
+      requests:
+        storage: 5Gi

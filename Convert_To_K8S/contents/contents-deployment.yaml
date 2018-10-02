@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: contents
+  labels:
+    app: contents
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: contents
+  template:
+    metadata:
+      labels:
+        app: contents
+    spec:
+      containers:
+      - name: contents
+        image: docker.sds-act.com/contents:latest
+        ports:
+        - containerPort: 5000

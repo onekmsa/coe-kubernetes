@@ -1,0 +1,45 @@
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: mariadb
+spec:
+  serviceName: "mariadb"
+  updateStrategy:
+    type: RollingUpdate
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        role: "mariadb"
+        environment: development
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: mariadb
+        image: mariadb
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: mariadb-config
+              key: MYSQL_ROOT_PASSWORD
+        - name: MYSQL_ALLOW_EMPTY_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: mariadb-config
+              key: MYSQL_ALLOW_EMPTY_PASSWORD
+        volumeMounts:
+        - name: local-claim
+          mountPath: /var/lib/mysql
+  volumeClaimTemplates:
+  - metadata:
+      name: local-claim
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      storageClassName: local-mariadb-storage
+      resources:
+        requests:
+          storage: 1Gi

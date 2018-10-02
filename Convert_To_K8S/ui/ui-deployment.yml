@@ -1,0 +1,43 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nxs-ui
+  labels:
+    app: nxs-ui
+    version: v1
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nxs-ui
+        version: v1
+    spec:
+      terminationGracePeriodSeconds: 5
+      volumes:
+      - name: nginx
+        configMap:
+          name: nginx
+          # Map all keys to files.
+#      - name: www-get
+#        configMap:
+#          name: www-get
+      containers:
+      - name: nginx
+        image: docker.sds-act.com/nxs-ui-test
+        resources:
+          limits:
+            cpu: 1
+            memory: 512Mi
+        ports:
+        - name: http
+          containerPort: 80
+        - name: https
+          containerPort: 443
+        volumeMounts:
+        - name: nginx
+          mountPath: /etc/nginx/servers
+          readOnly: true
+#        - name: www-get
+#          mountPath: /var/www/html
+#          readOnly: true

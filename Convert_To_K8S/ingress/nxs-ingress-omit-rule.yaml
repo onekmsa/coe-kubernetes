@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: omit-service-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: 'false'
+    #    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - http:
+     paths:
+     - path: /api/v1/signin
+       backend:
+         serviceName: admin
+         servicePort: 5000

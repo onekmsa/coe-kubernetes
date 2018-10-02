@@ -1,0 +1,35 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: nxs-service-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/auth-url: http://auth.default.svc.cluster.local:9000/api/v1/auth/
+          #nginx.ingress.kubernetes.io/auth-url: http://auth:9000/api/v1/auth/
+          # nginx.ingress.kubernetes.io/auth-url: http://10.111.158.16:9000/api/v1/auth/
+    nginx.ingress.kubernetes.io/auth-method: 'POST'
+    nginx.ingress.kubernetes.io/ssl-redirect: 'false'
+    nginx.ingress.kubernetes.io/auth-response-headers: NDE-TENANT-ID, NDE-STORE-ID, NDE-USER-ID, NDE-ID
+spec:
+  rules:
+  - http:
+     paths:
+     - path: /api/v1/master-menus
+       backend:
+         serviceName: admin
+         servicePort: 5000
+     - path: /api/v1/stores
+       backend:
+         serviceName: admin
+         servicePort: 5000
+     - path: /api/v1/tags
+       backend:
+         serviceName: admin
+         servicePort: 5000
+     - path: /api/v1/contents
+       backend:
+         serviceName: contents
+         servicePort: 5000
+     - path: /api/v1/folders
+       backend:
+         serviceName: contents
+         servicePort: 5000

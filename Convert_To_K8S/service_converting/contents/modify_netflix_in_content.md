@@ -83,7 +83,7 @@ spring:
 ```
 
 ### 3. Source Code 수정
-####ContentsApplication.java에서 Eureka Discovery 어노테이션을 삭제합니다.
+#### ContentsApplication.java에서 Eureka Discovery 어노테이션을 삭제합니다.
 
 Eureka 설정은 더이상 참조하지 않으므로 Eureka Config Bean 설정 파일이 있다면 함께 삭제합니다.  
 (현 프로젝트에서는 config/AwsAwareEurekaInstanceConfig.java 파일을 삭제 했습니다.)

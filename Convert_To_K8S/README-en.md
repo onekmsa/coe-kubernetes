@@ -1,4 +1,4 @@
-## 1. 시작하기 전에
+## 1. Before Start
 
 ### 1.1 Compare Netflix OSS with Kubernetes
 
@@ -65,9 +65,9 @@
 #### 2.3.2 Run in K8S
 - Deploying images on K8S
 [K8S Deploy](./service_converting/contents/run_content_in_k8s.md)
-#### 부록: Deployment with CI/CD
+#### Appendix: Deployment with CI/CD
 - [K8S Jenkins Deploy](../3.CICD/kubernetes_deploy.md)
-#### 부록: Deployment of Database on K8S
+#### Appendix: Deployment of Database on K8S
 - [mariadb](./mariadb/README.md)
 - [mongo](./mongo/README.md)
 - [redis](./redis/README.md)

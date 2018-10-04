@@ -46,57 +46,17 @@
     - 인증
 
 ### 2.3 Service를 띄워보자
-#### 잠깐, K8S 어플리케이션들은 어떻게 통신할까요?
-  - K8S 내부 서비스 간 Internal 호출
-
-    K8S의 각 Pod들은 자신의 ClusterIP를 할당받습니다.
-    ```sh
-    $ kubectl get pod -o wide
-
-    NAME                                        READY     STATUS    RESTARTS   AGE       IP        
-    admin-55864f5cdc-mlzwg                      1/1       Running   0          14d       10.42.0.4
-    auth-76986d666f-blzb9                       1/1       Running   0          12d       10.44.0.5
-    contents-5bc8bdb9d4-r4hfn                   1/1       Running   0          14d       10.42.0.3
-    ```
-
-    각 Pod 내부에서 IP로 직접 호출하거나 DNS에 등록된 호스트명({pod-ip-address}.{namespace명}.pod.cluster.local)으로 호출할 수 있습니다.
-    하지만 Pod이 새로 생성될 경우에 IP는 계속 바뀌기 때문에 Pod를 직접 호출 하는건 좋은 방법이 아닙니다.
-
-    그래서 서비스 오브젝트를 만들어 IP가 아닌 서비스명({svc명}[.{namespace명}.svc.cluster.local], []는 생략가능 )으로 호출합니다.
-    자세한 내용은 [KubernetesService][KubernetesService] 참고하시기 바랍니다.
-
-    ```sh
-    $ kubectl get svc
-
-    NAME                       TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)        
-    admin                      NodePort    10.111.76.105    <none>        5000:31724/TCP
-    auth                       NodePort    10.111.158.16    <none>        9000:30180/TCP
-    contents                   NodePort    10.108.19.164    <none>        5000:32458/TCP
-    ```    
-
-  - K8S 내부 서비스에서 External 서버 호출
-    외부 호출도 마찬가지로 직접 코드 내에서 외부 IP를 주어 호출할 수 있습니다.
-    하지만 IP가 변경되면 코드를 변경해서 Pod을 다시 띄워줘야 하기 때문에 외부 IP를 아래와 같이 서비스 오브젝트로 관리하도록 권장하고 있습니다.
-    ```yaml
-    apiVersion: v1
-    kind: Service
-    metadata:
-      name: iam
-    spec:
-      clusterIP: X.X.X.X
-      ports:
-      - port: 9543
-        targetPort: 9543
-    ```
-    이제 외부 서버도 Internal 호출처럼 서비스명으로 호출할 수 있습니다.
-
 
 #### 2.3.0 Remove Netflix OSS Settings - NETFLIX OSS를 적용했던 프로젝트만 보세요
  - K8S 전환에 있어서 기존에 Netflix OSS Stack를 활용하는 것은 Optional 부분입니다. 조금 더 K8S의 기능을 활용하고자 한다면 이 가이드를 수행하는 것을 권장합니다.
  - 주요 변경사항
    - Eureka, Spring Cloud Config 설정제거
    - Service 호출시, Eureka를 참조하거나, IP BASE 호출을 Kubernetes DNS Name으로 변경
- - [이제 시작해보자](./service_converting/contents/modify_netflix_in_content.md)  
+ - [이제 시작해보자](./service_converting/contents/modify_netflix_in_content.md)    
+
+> **잠깐, K8S 어플리케이션들은 어떻게 통신할까?**
+ Service 오브젝트의 서비스명을 통해 Internal, External 서비스를 호출할 수 있습니다.
+ [K8S Service][Service]의 2.7을 참고하세요.   
 
 #### 2.3.1 Dockerize an application
 - K8S에 어플리케이션을 배포하기 위해서는 먼저 도커 이미지를 생성해야 합니다.
@@ -126,6 +86,7 @@
   [Pinpoint]: https://coe.gitbook.io/guide/tracing/pinpoint "Pinpoint"
   [Hystrix]: https://coe.gitbook.io/guide/circuit-breaker/hystrix "Hystrix"
   [Deployment]: ../2.개념/deploymentstrategies.md "Deployment"
+  [Service]: ../2.개념/kubernetes.md#L131 "Service"
 
   [Ingress]: ../2.%EA%B0%9C%EB%85%90/kubernetes-ingress.md "Ingress"
 

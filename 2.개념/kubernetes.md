@@ -109,7 +109,7 @@ app 레이블이 있는 Pod 조회
 $ kubectl get po -l '!app'
 ~~~
 
-또한 특정 팟을 SSD 노드에 배포하고 싶은 경우 아래와 같이 노드 셀렉터를 사용할 수 있습니다. 
+또한 특정 팟을 SSD 노드에 배포하고 싶은 경우 아래와 같이 노드 셀렉터를 사용할 수 있습니다.
 ~~~yaml
 apiVersion: v1
 kind: Pod
@@ -157,6 +157,52 @@ my-service 라는 이름의 서비스는 app=MyApp 이라는 label을 갖는 모
 <img height="400" src="../image/kube-service.png">    
 
 서비스를 통해 다른 cluster의 서비스에 접근하거나, Kubernetes 외부의 서비스를 호출하도록 할수 있습니다.  
+
+#### Service를 통한 어플리케이션 호출
+
+- K8S 내부 서비스 간 Internal 호출
+
+  K8S의 각 Pod들은 자신의 ClusterIP를 할당받습니다.
+  ```sh
+  $ kubectl get pod -o wide
+
+  NAME                                        READY     STATUS    RESTARTS   AGE       IP        
+  admin-55864f5cdc-mlzwg                      1/1       Running   0          14d       10.42.0.4
+  auth-76986d666f-blzb9                       1/1       Running   0          12d       10.44.0.5
+  contents-5bc8bdb9d4-r4hfn                   1/1       Running   0          14d       10.42.0.3
+  ```
+
+  각 Pod 내부에서 IP로 직접 호출하거나 DNS에 등록된 호스트명({pod-ip-address}.{namespace명}.pod.cluster.local)으로 호출할 수 있습니다.
+  하지만 Pod이 새로 생성될 경우에 IP는 계속 바뀌기 때문에 Pod를 직접 호출 하는건 좋은 방법이 아닙니다.
+
+  그래서 서비스 오브젝트를 만들어 IP가 아닌 서비스명({svc명}[.{namespace명}.svc.cluster.local], []는 생략가능 )으로 호출합니다.
+  자세한 내용은 [KubernetesService][KubernetesService] 참고하시기 바랍니다.
+
+  ```sh
+  $ kubectl get svc
+
+  NAME                       TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)        
+  admin                      NodePort    10.111.76.105    <none>        5000:31724/TCP
+  auth                       NodePort    10.111.158.16    <none>        9000:30180/TCP
+  contents                   NodePort    10.108.19.164    <none>        5000:32458/TCP
+  ```    
+
+- K8S 내부 서비스에서 External 서버 호출
+  외부 호출도 마찬가지로 직접 코드 내에서 외부 IP를 주어 호출할 수 있습니다.
+  하지만 IP가 변경되면 코드를 변경해서 Pod을 다시 띄워줘야 하기 때문에 외부 IP를 아래와 같이 서비스 오브젝트로 관리하도록 권장하고 있습니다.
+  ```yaml
+  apiVersion: v1
+  kind: Service
+  metadata:
+    name: iam
+  spec:
+    clusterIP: X.X.X.X
+    ports:
+    - port: 9543
+      targetPort: 9543
+  ```
+  이제 외부 서버도 Internal 호출처럼 서비스명으로 호출할 수 있습니다.
+
 
 #### Proxy-mode
 서비스들은 kube-proxy를 통해 가상 IP를 부여 받고 자신에게 들어온 요청을 backend pods으로 전달 합니다.  

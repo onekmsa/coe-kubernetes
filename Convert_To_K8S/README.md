@@ -86,7 +86,7 @@
   [Pinpoint]: https://coe.gitbook.io/guide/tracing/pinpoint "Pinpoint"
   [Hystrix]: https://coe.gitbook.io/guide/circuit-breaker/hystrix "Hystrix"
   [Deployment]: ../2.개념/deploymentstrategies.md "Deployment"
-  [Service]: ../2.개념/kubernetes.md#L131 "Service"
+  [Service]: ../2.개념/kubernetes.md#27-service "Service"
 
   [Ingress]: ../2.%EA%B0%9C%EB%85%90/kubernetes-ingress.md "Ingress"
 

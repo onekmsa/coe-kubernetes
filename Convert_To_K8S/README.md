@@ -62,7 +62,7 @@
     각 Pod 내부에서 IP로 직접 호출하거나 DNS에 등록된 호스트명({pod-ip-address}.{namespace명}.pod.cluster.local)으로 호출할 수 있습니다.
     하지만 Pod이 새로 생성될 경우에 IP는 계속 바뀌기 때문에 Pod를 직접 호출 하는건 좋은 방법이 아닙니다.
 
-    그래서 서비스 오브젝트를 만들어 IP가 아닌 서비스명({svc명}[.{namespace명}.svc.cluster.local], []는 생략가능 )으로 호출합니다.
+    그래서 서비스 오브젝트를 만들어 IP가 아닌 서비스명({svc명}[.{namespace명}.svc.cluster.local], []는 생략가능)으로 호출합니다.
     자세한 내용은 [KubernetesService][KubernetesService] 참고하시기 바랍니다.
 
     ```sh
@@ -74,7 +74,7 @@
     contents                   NodePort    10.108.19.164    <none>        5000:32458/TCP
     ```    
 
-  - K8S 내부 서비스에서 External 서버 호출
+  - K8S 내부 서비스에서 External 서버 호출  
     외부 호출도 마찬가지로 직접 코드 내에서 외부 IP를 주어 호출할 수 있습니다.
     하지만 IP가 변경되면 코드를 변경해서 Pod을 다시 띄워줘야 하기 때문에 외부 IP를 아래와 같이 서비스 오브젝트로 관리하도록 권장하고 있습니다.
     ```yaml

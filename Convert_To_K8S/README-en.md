@@ -49,7 +49,7 @@
 ### 2.3 Let's Run Applications
 
 #### 2.3.0 Remove Netflix OSS Settings (in case of NETFLIX OSS Applied Projects)
- - It's optional to use Netflix OSS stack on K8S environment. If you want to utilize K8S functions more, this guide is recommended.  
+ - It's optional to use Netflix OSS stack on K8S environment. But if you want to utilize K8S functions more, this guide is recommended.  
  - Key Settings
    - remove Netflix OSS configurations (Eureka, Spring Cloud Config..)
    - convert IP based requests to K8S DNS resolver based requests  

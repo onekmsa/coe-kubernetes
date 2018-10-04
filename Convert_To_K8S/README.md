@@ -88,7 +88,7 @@
   [Deployment]: ../2.개념/deploymentstrategies.md "Deployment"
   [Service]: ../2.개념/kubernetes.md#27-service "Service"
 
-  [Ingress]: ../2.%EA%B0%9C%EB%85%90/kubernetes-ingress.md "Ingress"
+  [Ingress]: ../2.개념/kubernetes-ingress.md "Ingress"
 
   [ConvertIngress]: ./ingress/README.md "ConvertIngress"
 

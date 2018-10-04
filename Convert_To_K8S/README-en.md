@@ -27,46 +27,47 @@
 ### 1.3 K8S Architecture
 <img src="../image/msa_with_kubernetes.png" width="600">
 
-## 2. 전환을 시작합니다.
+## 2. Let's start
 
-### 2.1 클라이언트에서 요청할 때, 처음 만나는 관문 Ingress
-  Netflix_OSS-Zuul을 K8S-Ingress로 ....
-   - [Ingress 설정 방법][ConvertIngress]
-     - Nginx Ingress 설치방법
-     - Ingress 라우팅 설정
-     - [인증서비스](./ingress/auth-service-deploy.md)
-### 2.2 Auth Service가 왜 새로 생기나요?
-   <img src="../image/zuul_filter.png" width="500">  
+### 2.1 Client request to Gateway : Ingress
+  converting Netflix OSS Zuul to K8S-Ingress....
+   - [how to setup Ingress][ConvertIngress]
+     - install Nginx Ingress
+     - configure routing rules
+     - [auth-service](./ingress/auth-service-deploy.md)
 
-  - Zuul의 경우 위 그림과 같이 Filter 기능을 제공합니다.
-  그러나 Ingress의 경우 Routing Rule만 제공할 뿐 Filter와 같은 기능은 제공하지 않고 있기 때문에, 별도의 Service로 해당 기능을 구현할 필요가 있습니다.
+### 2.2 Why Need Auth Service?
+   <img src="../image/zuul_filter.png" width="500">   
 
-  - [Auth-Service](./ingress/auth-service-deploy.md)에서 하는 기능 = Zuul Filter에서 하던 기능
-    - 권한
-    - 인증
+  - Zuul offers filters like the above image, but Ingress doesn't.  
+  Only configuring routing rules are available on Ingress. That's why we have to run a seperate auth service.     
 
-### 2.3 Service를 띄워보자
+  - [Auth-Service](./ingress/auth-service-deploy.md)'s features are equal to Zuul Filters'
+    - Authentication
+    - Authorization
 
-#### 2.3.0 Remove Netflix OSS Settings - NETFLIX OSS를 적용했던 프로젝트만 보세요
- - K8S 전환에 있어서 기존에 Netflix OSS Stack를 활용하는 것은 Optional 부분입니다. 조금 더 K8S의 기능을 활용하고자 한다면 이 가이드를 수행하는 것을 권장합니다.
- - 주요 변경사항
-   - Eureka, Spring Cloud Config 설정제거
-   - Service 호출시, Eureka를 참조하거나, IP BASE 호출을 Kubernetes DNS Name으로 변경
- - [이제 시작해보자](./service_converting/contents/modify_netflix_in_content.md)    
+### 2.3 Let's Run Applications
 
-> **잠깐, K8S 어플리케이션들은 어떻게 통신할까요?**  
- Service 오브젝트의 서비스명을 통해 Internal, External 서비스를 호출할 수 있습니다.  
- [K8S Service][Service]의 2.7을 참고하세요.   
+#### 2.3.0 Remove Netflix OSS Settings (in case of NETFLIX OSS Applied Projects)
+ - It's optional to use Netflix OSS stack on K8S environment. If you want to utilize K8S functions more, this guide is recommended.  
+ - Key Settings
+   - remove Netflix OSS configurations (Eureka, Spring Cloud Config..)
+   - convert IP based requests to K8S DNS resolver based requests  
+   [Converting Guide](./service_converting/contents/modify_netflix_in_content.md)    
+
+> **How applications connect each other on K8S?**  
+ Internal or External calling is available with Service Object's Service Name.
+ [What's Service Object?][Service]  
 
 #### 2.3.1 Dockerize an application
-- K8S에 어플리케이션을 배포하기 위해서는 먼저 도커 이미지를 생성해야 합니다.
+- You have to build a docker image to deploy an application on K8S
 [Dockerize](./service_converting/contents/dockerize_content.md)
 #### 2.3.2 Run in K8S
-- 만들어진 이미지로 K8S에 배포해 보겠습니다.
+- Deploying images on K8S
 [K8S Deploy](./service_converting/contents/run_content_in_k8s.md)
-#### 부록: CI/CD로도 배포해보자
+#### 부록: Deployment with CI/CD
 - [K8S Jenkins Deploy](../3.CICD/kubernetes_deploy.md)
-#### 부록: K8S에 Database를 배포해보자
+#### 부록: Deployment of Database on K8S
 - [mariadb](./mariadb/README.md)
 - [mongo](./mongo/README.md)
 - [redis](./redis/README.md)

@@ -40,7 +40,7 @@
    <img src="../image/zuul_filter.png" width="500">   
 
   - Zuul offers filters like the above image, but Ingress doesn't.  
-  Only configuring routing rules are available on Ingress. That's why we have to run a seperate auth service.     
+  Only configuring routing rules are allowed on Ingress. That's why we have to run a seperate auth service.     
 
   - [Auth-Service](./ingress/auth-service-deploy.md)'s features are equal to Zuul Filters'
     - Authentication

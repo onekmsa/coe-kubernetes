@@ -1,18 +1,5 @@
 # k8s Logging
 
-로깅이 필요한 이유
-https://kubernetes.io/docs/concepts/cluster-administration/logging/
-
-
-
-단일 팟 로깅
-- 표준출력
-- 파일 복사 등
-
-중앙 집중 로깅
-- EFK
-- Daemonset
-
 로그는 쿠버네티스 상에서 일어나는 일을 기록하고 해당 로그를 통해서 발생한 문제들을 해결 할 수 있습니다.
 
 컨테이너 환경에서 일반적인 로깅 방법은 표준 출력과 표준 에러 스트림을 이용하여 기록하는 것 입니다.
@@ -130,7 +117,7 @@ systemd-journald는 로그 관리 데몬으로 부팅이 시작 되는 순간부
 
 ### 4.1 노드 레벨의 로깅 에이전트 사용
 
-![](./img/node-agent-logging.png)
+![](../image/node-agent-logging.png)
 
 쿠버네티스 클러스터에 대해 가장 일반적이고 권장되는 방법으로 각 노드에 로깅 에이전트를 포함시켜 해당 에이전트가 모든 로그를 수집하여 노출시키거나 백엔드(잘 알려진 백엔드로는 엘라스틱서치)에 로그를 푸시하는 형태입니다.
 
@@ -142,7 +129,7 @@ systemd-journald는 로그 관리 데몬으로 부팅이 시작 되는 순간부
 
 위의 그림을 EFK로 구성하게 되면 아래와 같은 그림으로 표현할 수 있습니다.
 
-![](./img/efk.png)
+![](../image/efk.png)
 
 
 * ElastciSearch(이하 엘라스틱서치) - 로그를 저장하고 쿼리를 통해서 정보를 가져올 수 있도록 하는 엔진입니다.
@@ -514,7 +501,7 @@ spec:
 
 http://[클러스터 IP]:30400 에서 키바나 대쉬보드를 아래와 같이 확인 할 수 있습니다.
 
-![](./img/kibana-dashboard.png)
+![](../image/kibana-dashboard.png)
 
 로그가 정상적으로 보이는 것을 확인 하기 위해서 nginx를 실행합니다.
 ~~~bash
@@ -529,7 +516,7 @@ $ curl $(kubectl get pods -l 'run=nginx-test'  -o jsonpath="{range .items[*]}{@.
 
 키바나 화면에서 아래의 로그를 확인 할 수 있습니다.
 
-![](./img/kibana-nginx.png)
+![](../image/kibana-nginx.png)
 
 
 
@@ -544,7 +531,7 @@ $ curl $(kubectl get pods -l 'run=nginx-test'  -o jsonpath="{range .items[*]}{@.
 
 #### 4.2.1 스트리밍 사이드카 컨테이너
 
-![](./img/sidecar.png)
+![](../image/sidecar.png)
 
 각 어플리케이션에 로그 스트림을 분산 할 필요가 존재한다면 별도의 스트리밍 사이드카 컨테이너를 이용하도록 합니다.
 
@@ -634,7 +621,7 @@ Thu Oct  4 11:15:32 UTC 2018 INFO 3 [ACCESS]
 
 아래와 같이 3개의 컨테이너 로그가 따로 만들어진 것을 확인 할 수 있습니다.
 
-![](./img/sidecar-logfile.png)
+![](../image/sidecar-logfile.png)
 
 클러스터에 설치된 로깅 에이전트는 추가 구성 없이 해당 로그 스트림을 가져 올 수 있습니다.
 

@@ -55,7 +55,7 @@
 
 #### 2.3.1 Dockerize an application
 - K8S에 어플리케이션을 배포하기 위해서는 먼저 도커 이미지를 생성해야 합니다.
-[Dokerize](./service_converting/contents/dockerize_content.md)
+[Dockerize](./service_converting/contents/dockerize_content.md)
 #### 2.3.2 Run in K8S
 - 만들어진 이미지로 K8S에 배포해 보겠습니다.
 [K8S Deploy](./service_converting/contents/run_content_in_k8s.md)

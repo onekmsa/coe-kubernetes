@@ -60,10 +60,10 @@
  [What's Service Object?][Service]  
 
 #### 2.3.1 Dockerize an application
-- You have to build a docker image to deploy an application on K8S
+- You have to build a docker image to deploy an application on K8S  
 [Dockerize](./service_converting/contents/dockerize_content.md)
 #### 2.3.2 Run on K8S
-- Deploying images on K8S
+- Deploying images on K8S  
 [K8S Deploy](./service_converting/contents/run_content_in_k8s.md)
 #### Appendix: Deployment with CI/CD
 - [K8S Jenkins Deploy](../3.CICD/kubernetes_deploy.md)

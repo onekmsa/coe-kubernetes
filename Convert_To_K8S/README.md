@@ -54,8 +54,8 @@
    - Service 호출시, Eureka를 참조하거나, IP BASE 호출을 Kubernetes DNS Name으로 변경
  - [이제 시작해보자](./service_converting/contents/modify_netflix_in_content.md)    
 
-> **잠깐, K8S 어플리케이션들은 어떻게 통신할까?**
- Service 오브젝트의 서비스명을 통해 Internal, External 서비스를 호출할 수 있습니다.
+> **잠깐, K8S 어플리케이션들은 어떻게 통신할까요?**  
+ Service 오브젝트의 서비스명을 통해 Internal, External 서비스를 호출할 수 있습니다.  
  [K8S Service][Service]의 2.7을 참고하세요.   
 
 #### 2.3.1 Dockerize an application

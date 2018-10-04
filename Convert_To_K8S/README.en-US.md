@@ -1,8 +1,8 @@
-## 1. Before Start
+## 1. Before we start
 
 ### 1.1 Compare Netflix OSS with Kubernetes
 
-| Microservice    | Spring Cloud & Netflix OSS  |Kubernetes      |
+| Microservices    | Spring Cloud & Netflix OSS  |Kubernetes      |
 |------|------|------|
 | Config Management|[Config Server][Config Server], Consul, Netflix Archaius | Config Map & Secret |
 | Service Discovery                  | [Eureka][Eureka] | Kubernetes DNS                     |
@@ -20,54 +20,54 @@
 
 
 
-### 1.2 MicroService Architecture
+### 1.2 Microservice Architecture
 <img src="../image/msa_with_netflix.png" width="600">
 
 
-### 1.3 K8S Architecture
+### 1.3 K8s Architecture
 <img src="../image/msa_with_kubernetes.png" width="600">
 
-## 2. Let's start
+## 2. Let's get started
 
-### 2.1 Client request to Gateway : Ingress
-  converting Netflix OSS Zuul to K8S-Ingress....
+### 2.1 Client request to gateway : Ingress
+  convert Netflix OSS Zuul to K8s-Ingress....
    - [how to setup Ingress][ConvertIngress]
      - install Nginx Ingress
      - configure routing rules
-     - [auth-service](./ingress/auth-service-deploy.md)
+     - [add auth-service](./ingress/auth-service-deploy.md)
 
-### 2.2 Why Need Auth Service?
+### 2.2 Why do we need auth-service?
    <img src="../image/zuul_filter.png" width="500">   
 
-  - Zuul offers filters like the above image, but Ingress doesn't.  
-  Only configuring routing rules are allowed on Ingress. That's why we have to run a seperate auth service.     
+  - Zuul offers filters like the above image, but Ingress does not.  
+  Only configuration routing rules are allowed on Ingress. Thus we have to run a seperate auth-service.     
 
-  - [Auth-Service](./ingress/auth-service-deploy.md)'s features are equal to Zuul Filters'
+  - [Auth-service](./ingress/auth-service-deploy.md)'s features are equal to Zuul Filters
     - Authentication
     - Authorization
 
-### 2.3 Let's Run Applications
+### 2.3 Let's run applications
 
-#### 2.3.0 Remove Netflix OSS Settings (only for NETFLIX OSS applied projects)
- - It's optional to use Netflix OSS stack on K8S environment. But if you want to utilize K8S functions more, this guide is recommended.  
- - Key Settings
+#### 2.3.0 Remove Netflix OSS settings (only for Netflix OSS applied projects)
+ - It is not mandatory to use Netflix OSS stack on K8s environment. But still you can utilize K8s functions instead of ones from Netflix OSS stack, the following guides are recommended.  
+ - Key settings
    - remove Netflix OSS configurations (Eureka, Spring Cloud Config..)
-   - convert IP based requests to K8S DNS resolver based requests  
-   [Converting Guide](./service_converting/contents/modify_netflix_in_content.md)    
+   - convert IP based requests to K8s DNS resolver based requests  
+   [converting guide](./service_converting/contents/modify_netflix_in_content.md)    
 
-> **How applications connect each other on K8S?**  
- Internal or External calling is available with Service Object's Service Name.
- [What's Service Object?][Service]  
+> **How applications connect each other on K8s?**  
+ Internal or external calling is available with service object's service name.
+ [What's service object?][Service]  
 
 #### 2.3.1 Dockerize an application
-- You have to build a docker image to deploy an application on K8S  
+- You have to build a docker image to deploy an application on K8s  
 [Dockerize](./service_converting/contents/dockerize_content.md)
-#### 2.3.2 Run on K8S
-- Deploying images on K8S  
-[K8S Deploy](./service_converting/contents/run_content_in_k8s.md)
+#### 2.3.2 Run on K8s
+- Deploying images on K8s  
+[K8s Deploy](./service_converting/contents/run_content_in_k8s.md)
 #### Appendix: Deployment with CI/CD
-- [K8S Jenkins Deploy](../3.CICD/kubernetes_deploy.md)
-#### Appendix: Deployment of Database on K8S
+- [K8s Jenkins deploy](../3.CICD/kubernetes_deploy.md)
+#### Appendix: Deployment of database on K8s
 - [mariadb](./mariadb/README.md)
 - [mongo](./mongo/README.md)
 - [redis](./redis/README.md)

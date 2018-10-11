@@ -1,6 +1,7 @@
 
-## 1. Kubernetes Components
+## 1. Kubernetes Components  
 ![](../image/kubernetes-components.png)
+  
 **control plane (master node)**
  - etcd  
  - Scheduler
@@ -94,6 +95,7 @@ optimistic locking을 통해 클라이언트가 동시에 업데이트 할 경�
 
 우리가 사용하고 있는 kubectl 커맨드 툴은 API 서버 클라이언트 중 하나입니다. 예를들어, JSON 파일로 리소스를 생성할 때 kubectl은 API 서버에 HTTP POST 요청을 합니다.  
 아래 이미지는 HTTP 요청을 할 때 API 서버에서 실행되는 프로세스입니다.  
+
 ![](../image/kubernetes-apiserver.png)
 - Authentication : 허가 된 클라이언트가 요청을 보냈는지 확인합니다.
 - Authorization : 클라이언트가 요청한 리소스에 대한 권한이 있는지 확인합니다.

@@ -1,5 +1,6 @@
 
 ## 1. Kubernetes Components
+![](../image/kubernetes-components.png)
 **control plane (master node)**
  - etcd  
  - Scheduler
@@ -51,7 +52,7 @@ kube-apiserver                            kube-master
 coredns-78fcdf6894-gh9rc                  kube-master
 ```
 
-## 2. 쿠버네티스는 어떻게 etcd를 사용할까
+## 2. etcd
 Pods, Service, Secrets 등등 모든 오브젝트들은 어딘가에 영구적으로 저장되어 API 서버가 재시작 되거나 실패하더라도 모든 manifest 데이터가 유지되어야 합니다. 이를 위해 쿠버네티스는 빠른 분산형 key-value 스토어인 etcd를 사용합니다. 분산형이기때문에 다중 인스턴스를 통해 고가용성과 고성능을 보장할 수 있습니다.
 > etcd를 다중 인스턴스로 클러스터링할때는 홀수개로 유지해야 합니다.
 클라이언트가 API 서버를 통해 etcd를 접근할 때 각 인스턴스별로 상태가 다를 수 있습니다. (actual state 또는 past state)
@@ -86,7 +87,7 @@ $ etcdctl get /registry/pods/default/nginx
 
 JSON 형태의 Pod 정보가 조회되는 것을 확인할 수 있습니다. API 서버는 etcd에 리소스 정보를 JSON 파일로 저장할 뿐입니다.   
 
-## 3. API 서버가 하는 일
+## 3. API server
 API 서버는 RESTful API를 통해 클러스터 상태를 변경하는 CRUD 인터페이스를 제공하고 데이터를 etcd에 저장합니다.
 또한 validation을 통해 오브젝트 설정이 맞는지 확인하여 맞지 않으면 etcd에 저장하지 않습니다.  
 optimistic locking을 통해 클라이언트가 동시에 업데이트 할 경우 Concurrency를 유지하도록 합니다.  
@@ -126,3 +127,31 @@ Controller는 리소스들에 변화가 생기면(오브젝트 CUD) API 서버�
 - Namespace controller
 - PersistentVolume controller
 - Others  
+
+### Controller는 어떻게 동작할까
+
+![](../image/kubernetes-controller.png)
+
+Replication Manager는 Replication Controller 리소스의 변경사항을 반영하는 Controller입니다.
+ReplicationController와 해당 Pod 리소스의 변경이 있을 시 API 서버로부터 notification을 받고 있습니다.
+
+Replication Controller 리소스의 replica 개수를 증가시키는 경우 아래와 같이 동작합니다.  
+1. API 서버에 ReplicationController의 리소스를 증가시키는 HTTP 요청이 들어옵니다.
+2. API 서버는 Replication Manager에 notification을 줍니다.
+3. Replication Manager은 명시된 Pod 템플릿을 통해 새로운 Pod manifest를 만들고 API 서버에 Pod 이벤트 리소스를 생성합니다.
+이후 과정은 Pod이 생성되는 과정과 같습니다. (etcd 저장, Scheduler 노드 할당, kubelet Pod 생성)  
+
+### 6. Kubelet
+각 노드마다 실행되는 kubelet만이 Pod을 생성할 수 있습니다. 그 외 아래의 기능을 담당합니다.   
+
+- API 서버를 통해 Node 리소스 생성
+- 노드에 스케줄링 된 Pod이 있는지 API 서버를 모니터링하고, 있다면 Pod의 컨테이너를 실행
+- 실행중인 컨테이너를 모니터링하고, 상태, 이벤트, 리소스 사용상태를 API 서버에 전송  
+- 컨테이너의 Liveness Probe를 실행하여, 실패 시 컨테이너 재시작
+- API 서버에 Pod 삭제 호출이 오면 컨테이너 작동 중지 후 서버에 notification
+
+
+### 7. Service Proxy
+각 노드마다 실행되는 kube-proxy는 클라이언트가 특정 서비스와 통신할 수 있도록 합니다.  
+- userspace proxy mode
+- iptables proxy mode

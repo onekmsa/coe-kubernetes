@@ -29,9 +29,7 @@ etcd와 API 서버의 다중 인스턴스는 동시에 병렬로 job을 수행�
 
 
 ### 컴포넌트들은 어떻게 실행될까
-Control Plane 컴포넌트들과 kube-proxy는 시스템에 직접 배포될 수도 있고 Pod으로 실행될 수도 있습니다.
-Kubelet만 항상 시스템 컴포넌트로 실행되고 Kubelet이 다른 모든 컴포넌트들을 Pod으로 실행시킵니다. 따라서 Control Plane 컴포넌트들이 Pod으로 실행되기 위해선 Kubelet이 마스터 노트에 배포되어야 있어야 합니다.
-
+Control Plane 컴포넌트들과 kube-proxy는 시스템에 직접 배포될 수도 있고 Pod으로 실행될 수도 있습니다.Kubelet만 항상 시스템 컴포넌트로 실행되고 Kubelet이 다른 모든 컴포넌트들을 Pod으로 실행시킵니다. 따라서 Control Plane 컴포넌트들이 Pod으로 실행되기 위해선 Kubelet이 마스터 노트에 배포되어야 있어야 합니다.  
 아래와 같이 kube-system namespace의 Pod들을 조회해보면 Control Plane 컴포넌트들이 마스터노드에 Pod으로 실행되고 있습니다. 또한 세 개의 worker node가 있고 각 노드에서는 kube-proxy가 실행되고 있습니다.  
 ```sh
 $ kubectl get pod -o custom-columns=POD:metadata.name,NODE:spec.nodeName --sort-by spec.nodeName -n kube-system  
@@ -55,19 +53,19 @@ coredns-78fcdf6894-gh9rc                  kube-master
 
 ## 2. etcd
 Pods, Service, Secrets 등등 모든 오브젝트들은 어딘가에 영구적으로 저장되어 API 서버가 재시작 되거나 실패하더라도 모든 manifest 데이터가 유지되어야 합니다. 이를 위해 쿠버네티스는 빠른 분산형 key-value 스토어인 etcd를 사용합니다. 분산형이기때문에 다중 인스턴스를 통해 고가용성과 고성능을 보장할 수 있습니다.
-> etcd를 다중 인스턴스로 클러스터링할때는 홀수개로 유지해야 합니다.
-클라이언트가 API 서버를 통해 etcd를 접근할 때 각 인스턴스별로 상태가 다를 수 있습니다. (actual state 또는 past state)
-consensus 알고리즘은 클러스터가 next state로 변경할 때 현재 존재하는 인스턴스 개수가 과반수(majority)를 넘어야 합니다.
+> etcd를 다중 인스턴스로 클러스터링할때는 홀수개로 유지해야 합니다.  
+클라이언트가 API 서버를 통해 etcd를 접근할 때 각 인스턴스별로 상태가 다를 수 있습니다. (actual state 또는 past state)   
+consensus 알고리즘은 클러스터가 next state로 변경할 때 현재 존재하는 인스턴스 개수가 과반수(majority)를 넘어야 합니다.  
 예를들어, 두 개의 etcd 인스턴스가 클러스터링되어 있고 한개의 인스턴스가 다운됐다면 남아있는 하나의 인스턴스는 majority 개수를
-충족하지 못 하므로 state change는 불가합니다. 따라서 짝수 개수로 인스턴스 개수를 늘리는 것은 무의미합니다.
+충족하지 못 하므로 state change는 불가합니다. 따라서 짝수 개수로 인스턴스 개수를 늘리는 것은 무의미합니다.  
 보통 규모가 큰 클러스터의 경우 5개나 7개가 적정입니다. 각각은 2개, 3개 인스턴스 다운까지 견딜 수 있습니다.  
 
 API 서버 컴포넌트만이 etcd에 직접 접근할 수 있습니다. 다른 컴포넌트들이 etcd 데이터를 읽고 쓰려면 API 서버를 통해 간접적으로 요청해야합니다. 이를 통해, 요청에 대한 validation과 concurrency를 유지할 수 있고, API 서버 외에 다른 컴포넌트들을 실제 스토리지 매커니즘으로 부터 분리하여 나중에 스토리지를 쉽게 교체할 수 있도록 해줍니다.  
 etcd는 쿠버네티스가 클러스터 상태와 메타데이터를 저장하는 유일한 장소입니다.  
 
-> Optimistic locking
+> Optimistic locking  
 데이터에 lock을 걸어 read나 update가 불가능하게 만드는 대신 버전넘버를 통해 Concurrency를 유지한다.
-데이터는 버전넘버를 갖고 업데이트가 될 때마다 버전넘버를 증가시키므로 업데이트 시, 버전넘버를 통해 최신 데이터인지 확인한다.
+데이터는 버전넘버를 갖고 업데이트가 될 때마다 버전넘버를 증가시키므로 업데이트 시, 버전넘버를 통해 최신 데이터인지 확인한다.  
 모든 쿠버네티스 리소스들은 metada.resourceVersion 필드를 갖고 클라이언트가 오브젝트를 업데이트할 때 API 서버에 함께 전달한다. 만약 버전이 etcd에 저장된 버전과 맞지 않으면 API 서버는 업데이트를 수행하지 않는다.
 
 ### 리소스들은 어떻게 etcd에 저장될까

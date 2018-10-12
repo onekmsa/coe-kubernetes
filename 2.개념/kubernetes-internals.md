@@ -141,7 +141,7 @@ Replication Controller 리소스의 replica 개수를 증가시키는 경우 아
 3. Replication Manager은 명시된 Pod 템플릿을 통해 새로운 Pod manifest를 만들고 API 서버에 Pod 이벤트 리소스를 생성합니다.
 이후 과정은 Pod이 생성되는 과정과 같습니다. (etcd 저장, Scheduler 노드 할당, kubelet Pod 생성)  
 
-### 6. Kubelet
+## 6. Kubelet
 각 노드마다 실행되는 kubelet만이 Pod을 생성할 수 있습니다. 그 외 아래의 기능을 담당합니다.   
 
 - API 서버를 통해 Node 리소스 생성
@@ -151,7 +151,7 @@ Replication Controller 리소스의 replica 개수를 증가시키는 경우 아
 - API 서버에 Pod 삭제 호출이 오면 컨테이너 작동 중지 후 서버에 notification
 
 
-### 7. Service Proxy
+## 7. Service Proxy
 각 노드마다 실행되는 kube-proxy는 클라이언트가 특정 서비스와 통신할 수 있도록 합니다.  
 - userspace proxy mode
 - iptables proxy mode

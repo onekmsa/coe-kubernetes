@@ -75,7 +75,7 @@ etcd v2는 key를 파일시스템의 파일들처럼 계층형 구조로 저장�
 ```sh
 # HTTPS 인증이 필요할 경우 인증서와 키파일 경로를 함께 명시해야 함
 # ETCDCTL_API 환경변수가 등록되지 않았을 경우 default는 v2이므로 command가 달라질 수 있음
-$ ETCDCTL_API=3 etcdctl [--endpoints=https://[127.0.0.1]:2379 --cacert={file_path} --cert={file_path} --key={file_path}] get /registry --prefix=true --keys-only
+$ ETCDCTL_API=3 etcdctl [--endpoints=https://[127.0.0.1]:2379 --cacert={file_path:/etc/kubernetes/pki/etcd/ca.crt} --cert={file_path} --key={file_path}] get /registry --prefix=true --keys-only
 ```
 
 아래와 같은 명령어로 default namespace의 pod에 대한 manifest 정보를 조회할 수 있습니다.  

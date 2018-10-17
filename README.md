@@ -8,19 +8,19 @@
 
 ## 2. 쿠버네티스 개념 및 용어
 
-* 쿠버네티스 개념 및 기본 용어[바로가기](./2.개념/kubernetes.md)
+* 쿠버네티스 개념 및 기본 용어 [바로가기](./2.개념/kubernetes.md)
 
-* 쿠버네티스 컴포넌트[바로가기](./2.개념/kubernetes-internal.md)
-*
-* 쿠버네티스 deployment[바로가기](./2.개념/deployment.md)
+* 쿠버네티스 컴포넌트 [바로가기](./2.개념/kubernetes-internals.md)
 
-* 쿠버네티스 deployment strategy[바로가기](./2.개념/deploymentstrategies.md)
+* 쿠버네티스 deployment [바로가기](./2.개념/deployment.md)
 
-* 쿠버네티스 ingress[바로가기](./2.개념/kubernetes-ingress.md)
+* 쿠버네티스 deployment strategy [바로가기](./2.개념/deploymentstrategies.md)
 
-* 로깅(EFK)[바로가기](./2.개념/log.md)
+* 쿠버네티스 ingress [바로가기](./2.개념/kubernetes-ingress.md)
 
-* 트래이싱(Zipkin)[바로가기](./2.개념/tracing-zipkin.md)
+* Logging (EFK) [바로가기](./2.개념/log.md)
+
+* Tracing (Zipkin) [바로가기](./2.개념/tracing-zipkin.md)
 
 ## 3. CICD
 

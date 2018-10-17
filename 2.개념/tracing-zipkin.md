@@ -5,8 +5,8 @@ Zipkin은 Sleuth의 TraceId, SpanId를 수집해서 서비스 간 트랜잭션�
 
 Zipkin은 데이터저장소가 연결되어있지 않으면 기본적으로 In-Memory를 사용하지만 데이터 영속성이 없기때문에 테스트 용도가 아니라면 Zipkin을 위한 별도의 데이터저장소(Cassandra, Elasticsearch 등)를 설치해주어야 합니다. 이 예제에서는 mysql을 사용하였습니다.
 
-[Sleuth는 어떻게 TraceId, SpanId를 발급할까](https://github.com/SDSACT/coe-guide/blob/master/Log/Sleuth.md)
-[Zipkin 클라이언트 라이브러리 종류](https://zipkin.io/pages/existing_instrumentations.html)
+[Sleuth는 어떻게 TraceId, SpanId를 발급할까](https://github.com/SDSACT/coe-guide/blob/master/Log/Sleuth.md)  
+[Zipkin 클라이언트 라이브러리 종류](https://zipkin.io/pages/existing_instrumentations.html)  
 [Zipkin API](https://zipkin.io/zipkin-api/)
 
 ### Zipkin Server 배포
@@ -297,3 +297,6 @@ spring:
 2018-10-17 15:04:29.003 DEBUG [sample-service,,,] 52211 --- [ender@15186ce0}] s.n.www.protocol.http.HttpURLConnection  : sun.net.www.MessageHeader@5fca3e885 pairs: {null: HTTP/1.1 202 Accepted}{Connection: keep-alive}{vary: origin}{Content-Length: 0}{Date: Wed, 17 Oct 2018 06:04:28 GMT}
 2018-10-17 15:04:29.003 DEBUG [sample-service,,,] 52211 --- [ender@15186ce0}] o.s.c.s.z.s.ZipkinRestTemplateWrapper    : POST request for "http://kube-master:30788/api/v2/spans" resulted in 202 (Accepted)   
 ```
+
+Zipkin UI에 접속하여 해당 데이터를 확인합니다.
+![](../image/kubernetes-zipkin2.png)

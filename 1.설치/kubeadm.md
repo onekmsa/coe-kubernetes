@@ -227,6 +227,18 @@ kubernetes-dashboard 의 port가 변경 된 것을 확인 할 수 있습니다.
   ~~~bash
   $ kubectl create -f [파일명].yaml
   ~~~
+  
+### 3.1 Dashboard 삭제하기
+
+~~~
+kubectl delete deployment kubernetes-dashboard --namespace=kube-system 
+kubectl delete service kubernetes-dashboard  --namespace=kube-system 
+kubectl delete role kubernetes-dashboard-minimal --namespace=kube-system 
+kubectl delete rolebinding kubernetes-dashboard-minimal --namespace=kube-system
+kubectl delete sa kubernetes-dashboard --namespace=kube-system 
+kubectl delete secret kubernetes-dashboard-certs --namespace=kube-system
+kubectl delete secret kubernetes-dashboard-key-holder --namespace=kube-system
+~~~
 
 ## 4. deployement 생성하기
 pod을 생성한 이후 expose 명령어를 통해서 서비스로 노출 시킬 수 있지만 복제 등의 기능을 하기 위해서 처음부터 deployment로 만들겠습니다.

@@ -25,10 +25,9 @@
     $ docker push {{REPOSITORY_URL:PORT}}/{{SERVICE_NAME}}
     ```
 
-## 2. Create namesapce
+## 2. Deployment Rabbitmq
+- [RabbitMQ 인스턴스 올리기](https://github.com/SDSACT/coe-kubernetes/blob/master/Convert_To_K8S/rabbitmq/README.md)
 
-```sh
-$ create namespace sample-services
-```
-
-## 3. Deployment Rabbitmq
+## 3. Deployment services
+- [Kubernetes Deploy](https://github.com/SDSACT/coe-kubernetes/blob/master/Convert_To_K8S/service_converting/contents/run_content_in_k8s.md)
+- 

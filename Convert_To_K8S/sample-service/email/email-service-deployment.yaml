@@ -19,3 +19,6 @@ spec:
         image: docker.sds-act.com/email-service:latest
         ports:
         - containerPort: 8080
+        env:
+        - name: RABBITMQ_SERVER_URL
+          value: "rabbitmq"

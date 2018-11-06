@@ -49,7 +49,6 @@ spec:
         - name: local-claim
           mountPath: /var/lib/mysql
 ```
-~~~
 
 
 위와 같은 내용으로 파일을 만들고 아래의 명령으로 실행하여 StatefulSet 리소스를 생성합니다.

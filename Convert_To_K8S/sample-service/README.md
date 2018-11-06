@@ -30,4 +30,45 @@
 
 ## 3. Deployment services
 - [Kubernetes Deploy](https://github.com/SDSACT/coe-kubernetes/blob/master/Convert_To_K8S/service_converting/contents/run_content_in_k8s.md)
-- 
+- {{SERVICE_NAME}}-deployment.yaml
+  ```yaml
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: {{SERVICE_NAME}}
+    labels:
+      app: {{SERVICE_NAME}}
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: {{SERVICE_NAME}}
+    template:
+      metadata:
+        labels:
+          app: {{SERVICE_NAME}}
+      spec:
+        containers:
+        - name: {{SERVICE_NAME}}
+          image: docker.sds-act.com/{{SERVICE_NAME}}:latest
+          ports:
+          - containerPort: 8080
+          env:
+          - name: RABBITMQ_SERVER_URL
+            value: "rabbitmq"
+  ```
+- {{SERVICE_NAME}}-svc.yaml
+  ```yaml
+  apiVersion: v1
+  kind: Service
+  metadata:
+    name: {{SERVICE_NAME}}
+  spec:
+    selector:
+      app: {{SERVICE_NAME}}
+    ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+    type: NodePort
+  ```

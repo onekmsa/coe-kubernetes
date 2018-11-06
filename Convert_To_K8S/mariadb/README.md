@@ -195,7 +195,7 @@ Enter password:
 
 다음과 같은 명령으로 필요한 환경변수를 ConfigMap에 저장합니다.
 ~~~bash
-$ kubectl create configmap --from-literal=MYSQL_ROOT_PASSWORD=your-password --from-literal=MYSQL_ALLOW_EMPTY_PASSWORD=yes
+$ kubectl create configmap mariadb-config --from-literal=MYSQL_ROOT_PASSWORD=your-password --from-literal=MYSQL_ALLOW_EMPTY_PASSWORD=yes
 $ kubectl get configmap mariadb-config -o yaml
 ~~~
 

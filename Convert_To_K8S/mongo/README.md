@@ -97,6 +97,12 @@ $ kubectl get nodes
 
 # 3. StatefulSet 수정
 
+mongodb-keyfile secret 생성
+
+```
+$ kubectl create secret generic mongo-key --from-file=mongodb-keyfile
+```
+
 위의 StatefulSet 설정을 아래와 같이 수정합니다.
 
 ~~~yml

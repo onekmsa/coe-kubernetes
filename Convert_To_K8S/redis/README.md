@@ -107,7 +107,7 @@ spec:
         volumeMounts:
         - mountPath: /bitnami/redis/data
           name: local-claim
-        - mountPath: /opt/bitnami/redis/etc
+        - mountPath: /opt/bitnami/redis/etc/redis.conf
           name: redisconfig
       volumes:
         - name: redisconfig

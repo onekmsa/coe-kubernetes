@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
- name: pv-local-rabbitmq
+ name: pv-sampel-service-rabbitmq
 spec:
  capacity:
-   storage: 10Gi
+   storage: 5Gi
  accessModes:
  - ReadWriteOnce
  persistentVolumeReclaimPolicy: Retain
- storageClassName: local-rabbitmq-storage
+ storageClassName: sample-service-rabbitmq-storage
  local:
    path: /home/actmember/workspace/rabbitmq/data
  nodeAffinity:
@@ -18,4 +18,4 @@ spec:
        - key: kubernetes.io/hostname
          operator: In
          values:
-         - act-kube-01
+         - act-kube-02

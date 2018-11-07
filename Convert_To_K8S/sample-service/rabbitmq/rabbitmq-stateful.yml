@@ -2,6 +2,7 @@ apiVersion: apps/v1beta1
 kind: StatefulSet
 metadata:
   name: rabbitmq
+  namespace: sample-service
 spec:
   serviceName: "rabbitmq"
   replicas: 1
@@ -50,7 +51,7 @@ spec:
     spec:
       accessModes:
       - ReadWriteOnce
-      storageClassName: local-rabbitmq-storage
+      storageClassName: sample-service-rabbitmq-storage
       resources:
         requests:
           storage: 1Gi # make this bigger in production

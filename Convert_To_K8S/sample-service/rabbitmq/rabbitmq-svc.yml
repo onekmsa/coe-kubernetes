@@ -3,6 +3,7 @@ kind: Service
 metadata:
   # Expose the management HTTP port on each node
   name: rabbitmq-management
+  namespace: sample-service
   labels:
     app: rabbitmq
 spec:
@@ -18,6 +19,7 @@ kind: Service
 metadata:
   # The required headless service for StatefulSets
   name: rabbitmq
+  namespace: sample-service
   labels:
     app: rabbitmq
 spec:

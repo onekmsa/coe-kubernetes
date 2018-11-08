@@ -7,8 +7,7 @@ spec:
   selector:
     app: order-service
   ports:
-  - nodePort: 31982
-    protocol: TCP
+  - protocol: TCP
     port: 8080
     targetPort: 8080
   type: ClusterIP

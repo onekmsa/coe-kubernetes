@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: sample-service-ingress
+  namespace: sample-service
+spec:
+  rules:
+  - http:
+     paths:
+     - path: /api/v1/orders
+       backend:
+         serviceName: order-service
+         servicePort: 8080
+     - path: /api/v1/customers
+       backend:
+         serviceName: customer-service
+         servicePort: 8080
+     - path: /api/v1/emails
+       backend:
+         serviceName: email-service
+         servicePort: 8080

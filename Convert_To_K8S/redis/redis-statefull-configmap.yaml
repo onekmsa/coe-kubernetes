@@ -7,11 +7,15 @@ spec:
   selector:
     matchLabels:
       app: redis
+      role: master
+      tier: backend
   replicas: 1
   template:
     metadata:
       labels:
         app: redis
+        role: master
+        tier: backend
     spec:
       containers:
       - name: master
@@ -31,7 +35,7 @@ spec:
         volumeMounts:
         - mountPath: /bitnami/redis/data
           name: local-claim
-        - mountPath: /opt/bitnami/redis/etc
+        - mountPath: /opt/bitnami/redis/etc/redis.conf
           name: redisconfig
       volumes:
         - name: redisconfig

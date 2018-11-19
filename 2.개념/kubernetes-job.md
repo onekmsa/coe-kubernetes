@@ -17,7 +17,7 @@ metadata:
 spec:
   completions : 5
   parallelism: 2
-  activeDeadlineSeconds: 60 
+  activeDeadlineSeconds: 60
   backoffLimit: 6
   template:
     metadata:
@@ -95,3 +95,17 @@ spec:
           - name: main
             image: batch-job
 ```
+
+## Concurrency Policy
+.spec.concurrencyPolicy 필드를 통해 동시에 실행되는 Job을 제어할 수 있다.
+- Allow(default)
+- Forbid : Job이 실행될 시간에 이전 Job이 완료되지 않았으면 새로운 Job을 실행하지 않는다.
+- Replace : Job이 실행될 시간에 이전 Job이 완료되지 않았으면 기존 Job을 새로운 Job으로 대체한다.
+
+## Suspend
+.spec.suspend
+
+## Jobs History Limits
+실행된 Job에 대한 히스토리 카운트 설정.
+.spec.successfulJobsHistoryLimit (default 3)
+.spec.failedJobsHistoryLimit (default 1)
